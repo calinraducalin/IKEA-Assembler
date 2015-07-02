@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">IKEA Assembler</string>
+    <string name="parse_app_id">zGmZgYqcmygWPaL2CzaK0ZeQnQ4gBwtX0a1pzKVI</string>
+    <string name="parse_client_id">vrYMfoNhDBlqQhZtMg6OT1Mngny1GZpkeuseRHcw</string>
+    <string name="glass_voice_trigger">Show Instructions</string>
+    <string name="title_activity_main">IKEA Assembler</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_continue">Continue</string>
+    <string name="action_start">Start</string>
+    <string name="action_back">Go back</string>
+    <string name="action_delete">Delete this</string>
+    <string name="action_scan">Scan QR code</string>
+    <string name="action_start_beginning">Start from scratch</string>
+    <string name="action_items">Check items</string>
+    <string name="action_components">Check components</string>
+    <string name="action_instructions">Instructions</string>
+    <string name="action_need">What do I need?</string>
+    <string name="action_next">Next</string>
+    <string name="action_previous">Previous</string>
+    <string name="action_skip_warnings">Skip Warnings</string>
+    <string name="action_skip_items">Skip Items</string>
+    <string name="action_skip_components">Skip components</string>
+    <string name="action_begin_assembly">Begin assembling</string>
+    <string name="hemnes">HEMNES Daybed</string>
+    <string name="success">Success!</string>
+    <string name="searching_item">Searching Item...</string>
+    <string name="preparing_item">Preparing Item...</string>
+    <string name="deleting_item">Deleting Item...</string>
+    <string name="alert_text_existing_item">Item already exists</string>
+    <string name="alert_footnote_existing_item">TAP to start instructions for this item</string>
+    <string name="alert_text_no_network">No network connectivity</string>
+    <string name="alert_footnote_no_network">TAP to view connectivity status</string>
+    <string name="alert_text_item_not_found">Item not found</string>
+    <string name="alert_footnote_item_not_found">TAP to scan again the code</string>
+    <string name="alert_text_invalid_code">The QR code is not valid</string>
+    <string name="alert_footnote_invalid_code">TAP to scan again the code</string>
+    <string name="alert_text_default">Unknown Error</string>
+    <string name="alert_footnote_default"> </string>
+
+</resources>

@@ -1,6 +1,7 @@
 package com.example.calinraducalin.ikeaassembler.view.start;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -14,8 +15,11 @@ import com.example.calinraducalin.ikeaassembler.base.BaseActivity;
 import com.example.calinraducalin.ikeaassembler.presenter.start.StartPresenter;
 import com.example.calinraducalin.ikeaassembler.utlis.AlertDialogActivity;
 import com.example.calinraducalin.ikeaassembler.utlis.ProgressActivity;
+import com.example.calinraducalin.ikeaassembler.view.components.ComponentsActivity;
 import com.example.calinraducalin.ikeaassembler.view.download.DownloadActivity;
+import com.example.calinraducalin.ikeaassembler.view.instructions.InstructionsActivity;
 import com.example.calinraducalin.ikeaassembler.view.items.ItemsActivity;
+import com.example.calinraducalin.ikeaassembler.view.warnings.WarningsActivity;
 import com.google.android.glass.view.WindowUtils;
 
 
@@ -25,14 +29,20 @@ public class StartActivity extends BaseActivity implements IStartView {
     private static final int LOADING_ACTIVITY = 101;
     private static final int ITEMS_ACTIVITY = 102;
     private static final int DOWNLOAD_ACTIVITY = 103;
+    public static final int WARNINGS_ACTIVITY = 104;
+    public static final int COMPONENTS_ACTIVITY = 105;
+    public static final int INSTRUCTIONS_ACTIVITY = 106;
+
+    private static final String MESSAGE = "message";
     private static final String SCAN_RESULT = "SCAN_RESULT";
 
+
     private Intent loadingIntent;
+    private int continueValue;
 
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-
         presenter = new StartPresenter(this);
         ((StartPresenter) presenter).setItemsManagerDelegate();
         buildView();
@@ -41,7 +51,7 @@ public class StartActivity extends BaseActivity implements IStartView {
     @Override
     protected void onStart() {
         super.onStart();
-
+        reloadContinueData();
         ImageView imageView = ((ImageView) findViewById(R.id.imageView));
         if (imageView != null) {
             imageView.setImageResource(R.drawable.ikea_assembler_caption);
@@ -56,7 +66,9 @@ public class StartActivity extends BaseActivity implements IStartView {
             //only for voice menu
         }
 
-//        menu.add(0, MENU_CONTINUE, Menu.NONE, R.string.action_continue).setIcon(R.drawable.ic_forward_50);     }
+        if (continueValue != -1) {
+            menu.add(0, MENU_CONTINUE, Menu.NONE, R.string.action_continue).setIcon(R.drawable.ic_forward_50);
+        }
 
         if (((StartPresenter) presenter).getItemsNumber() > 0) {
             menu.add(0, MENU_ITEMS_LIST, Menu.NONE, R.string.action_items).setIcon(R.drawable.ic_archive_50);
@@ -105,10 +117,17 @@ public class StartActivity extends BaseActivity implements IStartView {
         } else if (resultCode == RESULT_CODE_UNKNOWN_ERROR) {
             showAlertDialogForType(AlertDialogActivity.ALERT_TYPE_DEFAULT);
         } else if (resultCode == RESULT_CODE_ITEM_DOWNLOAD) {
-            //TODO: add functionality
+            navigateToWarningsActivity();
+        } else if (resultCode == WARNINGS_ACTIVITY) {
+            navigateToWarningsActivity();
+        } else if (resultCode == COMPONENTS_ACTIVITY) {
+            navigateToComponentsActivity();
+        } else if (resultCode == INSTRUCTIONS_ACTIVITY) {
+            navigateToInstructionsActivity();
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
 
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void handleScanResult(String itemCode) {
@@ -150,7 +169,7 @@ public class StartActivity extends BaseActivity implements IStartView {
         }
 
         loadingIntent = new Intent(StartActivity.this, ProgressActivity.class);
-        loadingIntent.putExtra("message", message);
+        loadingIntent.putExtra(MESSAGE, message);
         startActivityForResult(loadingIntent, LOADING_ACTIVITY);
     }
 
@@ -177,6 +196,37 @@ public class StartActivity extends BaseActivity implements IStartView {
         setContentView(R.layout.activity_main);
     }
 
+    @Override
+    public void navigateToWarningsActivity() {
+        Intent warningsIntent = new Intent(StartActivity.this, WarningsActivity.class);
+        reloadContinueData();
+        warningsIntent.putExtra(ITEM_INDEX, ((StartPresenter) presenter).getItemIndex());
+        warningsIntent.putExtra(ITEM_CODE, ((StartPresenter) presenter).getItemCode());
+        startActivityForResult(warningsIntent, WARNINGS_ACTIVITY);
+
+    }
+
+    @Override
+    public void navigateToComponentsActivity() {
+        Intent componentsIntent = new Intent(StartActivity.this, ComponentsActivity.class);
+        reloadContinueData();
+        componentsIntent.putExtra(ITEM_INDEX, ((StartPresenter) presenter).getItemIndex());
+        componentsIntent.putExtra(ITEM_CODE, ((StartPresenter) presenter).getItemCode());
+        startActivityForResult(componentsIntent, COMPONENTS_ACTIVITY);
+    }
+
+    @Override
+    public void navigateToInstructionsActivity() {
+        Intent instructionsIntent = new Intent(StartActivity.this, InstructionsActivity.class);
+        reloadContinueData();
+        int phase = (continueValue / 1000) - 1;
+        int step = continueValue % 1000;
+        instructionsIntent.putExtra(ITEM_INDEX, ((StartPresenter) presenter).getItemIndex());
+        instructionsIntent.putExtra(ITEM_CODE, ((StartPresenter) presenter).getItemCode());
+        instructionsIntent.putExtra(PHASE_INDEX, phase);
+        instructionsIntent.putExtra(STEP_INDEX, step);
+        startActivityForResult(instructionsIntent, COMPONENTS_ACTIVITY);
+    }
 
     @Override
     public void dismissView() {}
@@ -189,9 +239,25 @@ public class StartActivity extends BaseActivity implements IStartView {
 
     private void navigateToDownloadActivity(Integer code) {
         Intent objIntent = new Intent(StartActivity.this, DownloadActivity.class);
-        objIntent.putExtra("itemCode", code);
-        objIntent.putExtra("message", getString(R.string.preparing_item));
+        objIntent.putExtra(ITEM_CODE, code);
+        objIntent.putExtra(MESSAGE, getString(R.string.preparing_item));
         startActivityForResult(objIntent, DOWNLOAD_ACTIVITY);
     }
 
+    private int getContinueValue() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        int continueValue = settings.getInt(CONTINUE_KEY, -1);
+        return continueValue;
+    }
+
+    private int getItemCode() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        return settings.getInt(ITEM_CODE, -1);
+    }
+
+    private void reloadContinueData() {
+        continueValue = getContinueValue();
+        ((StartPresenter) presenter).setContinueValue(continueValue);
+        ((StartPresenter) presenter).setItemCode(getItemCode());
+    }
 }

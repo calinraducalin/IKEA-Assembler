@@ -3,6 +3,7 @@ package com.example.calinraducalin.ikeaassembler.utlis;
 import android.os.Environment;
 
 import com.example.calinraducalin.ikeaassembler.model.Item;
+import com.example.calinraducalin.ikeaassembler.model.Step;
 import com.example.calinraducalin.ikeaassembler.presenter.items.IItemsPresenter;
 import com.example.calinraducalin.ikeaassembler.presenter.start.IStartPresenter;
 
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * Created by calinraducalin on 23/06/15.
  */
-public class ItemsManager implements ItemsManagerDelegate {
+public class ItemsManager {
     private static final String itemsFolderName = "/items";
     private static final String itemsFileName = "/items.ser";
 
@@ -76,6 +77,17 @@ public class ItemsManager implements ItemsManagerDelegate {
         return ((Item) this.items.get(index)).getCode();
     }
 
+    public int getIndexForCode(int itemCode) {
+        int index = 0;
+        for (Object item : this.items) {
+            if (((Item) item).getCode().intValue() == itemCode) {
+                return index;
+            }
+            index++;
+        }
+        return -1;
+    }
+
     public List<Object> getItems() {
         return items;
     }
@@ -85,6 +97,10 @@ public class ItemsManager implements ItemsManagerDelegate {
     public List<Object> getComponentsForItem(int index) {
         return ((Item) this.items.get(index)).getComponents();
     }
+    public Step getStep(int index, int phase, int step) {
+        return ((Item) this.items.get(index)).getStep(phase, step);
+    }
+
 
 //    @Override
 //    public void succesfullyLoadItem(Item item) {
@@ -104,7 +120,7 @@ public class ItemsManager implements ItemsManagerDelegate {
             deleteRecursive(dir);
             //save items state
             saveItems();
-            itemsDelegate.itemSuccesfullyDeleted();
+            itemsDelegate.itemSuccesfullyDeleted(item.getCode());
         } else {
             itemsDelegate.itemDeletionError();
         }

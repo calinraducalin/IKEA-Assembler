@@ -48,7 +48,7 @@ public class AudioHelpManager {
         }
 //        queuedText = null;
         // Before speaking the current text, stop any ongoing speech.
-        //tts.stop();
+        textToSpeech.stop();
         // Speak the text.
         if (textToSpeech.speak(str, TextToSpeech.QUEUE_FLUSH, map) == TextToSpeech.ERROR) {
             leftToRead = str;

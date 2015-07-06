@@ -31,7 +31,12 @@ public class ComponentsPresenter extends BasePresenter implements IComponentsPre
         Log.d("ITEMS_ACTIVITY", "option " + option );
 
         switch (option) {
-
+            case IComponentsView.MENU_SKIP_COMPONENTS:
+                this.view.navigateToInstructionsActivity();
+                return true;
+            case IComponentsView.MENU_BEGIN_ASSAMBLING:
+                this.view.navigateToInstructionsActivity();
+                return true;
 
             default:
                 return false;

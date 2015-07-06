@@ -13,6 +13,9 @@ import com.example.calinraducalin.ikeaassembler.utlis.ItemsManager;
 public class StartPresenter extends BasePresenter implements IStartPresenter {
 
     private IStartView view;
+    private int continueValue;
+    private int itemIndex;
+    private int itemCode;
 
     public StartPresenter(IStartView startView) {
         super(startView);
@@ -22,7 +25,7 @@ public class StartPresenter extends BasePresenter implements IStartPresenter {
     public boolean handleOption(int option) {
         switch (option) {
             case IStartView.MENU_CONTINUE:
-                //TODO: add functionality
+                this.handleContinue();
                 return true;
             case IStartView.MENU_ITEMS_LIST:
                 view.navigateToItemsActivity();
@@ -37,14 +40,29 @@ public class StartPresenter extends BasePresenter implements IStartPresenter {
         }
     }
 
+    public void setContinueValue(int continueValue) {
+        this.continueValue = continueValue;
+    }
+
+    public void setItemCode(int code) {
+        this.itemCode = code;
+        if (code > -1) {
+            itemIndex = ItemsManager.getSharedInstance().getIndexForCode(code);
+        }
+    }
+
+    public int getItemCode() {
+        return itemCode;
+    }
+
+    public int getItemIndex() {
+        return itemIndex;
+    }
+
     public void setItemsManagerDelegate() {
         ItemsManager.getSharedInstance().setStartDelegate(this);
     }
 
-//    public void getItemFromServer(Integer itemCode) {
-//        ItemsManager.getSharedInstance().setStartDelegate(this);
-//        ItemsManager.getSharedInstance().getNewItemWithCode(itemCode);
-//    }
 
     public String isItemDownloaded(Integer code) {
         return ItemsManager.getSharedInstance().isItemDownloaded(code);
@@ -59,11 +77,6 @@ public class StartPresenter extends BasePresenter implements IStartPresenter {
         Log.d("START PRESENTER", "load from local data store");
         this.view.itemsReady();
     }
-
-//    @Override
-//    public void itemExists(String itemName) {
-//        this.view.showAlertDialogForType(AlertDialogActivity.ALERT_TYPE_EXISTING_ITEM);
-//    }
 
     @Override
     public void showLoadingActivity() {
@@ -88,5 +101,24 @@ public class StartPresenter extends BasePresenter implements IStartPresenter {
     @Override
     public int getItemsCount() {
         return 0;
+    }
+
+    private void handleContinue(){
+        switch (continueValue) {
+            case 1:
+                this.view.navigateToWarningsActivity();
+                break;
+            case 2:
+                this.view.navigateToComponentsActivity();
+                break;
+
+            default:
+                int phase = (continueValue / 1000) - 1;
+                if (phase > -1) {
+                    this.view.navigateToInstructionsActivity();
+                }
+                break;
+        }
+
     }
 }

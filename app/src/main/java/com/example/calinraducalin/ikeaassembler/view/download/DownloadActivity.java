@@ -2,6 +2,7 @@ package com.example.calinraducalin.ikeaassembler.view.download;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -86,6 +87,8 @@ public class DownloadActivity extends ProgressActivity implements IDownloadView 
 
     @Override
     public void succesfullyLoadItem(Item item) {
+        setItemCode(item.getCode());
+
         ObjectAnimator.ofFloat(mDeterminate, "position", ++currentIndex, totalSteps).start();
         AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         audioManager.playSoundEffect(Sounds.SUCCESS);
@@ -111,5 +114,16 @@ public class DownloadActivity extends ProgressActivity implements IDownloadView 
     @Override
     public void processingItemStarted() {
         this.processingItemStarted = true;
+    }
+
+    private void setItemCode(int code) {
+        // We need an Editor object to make preference changes.
+        // All objects are from android.context.Context
+        SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt("itemCode", code);
+
+        // Commit the edits!
+        editor.commit();
     }
 }

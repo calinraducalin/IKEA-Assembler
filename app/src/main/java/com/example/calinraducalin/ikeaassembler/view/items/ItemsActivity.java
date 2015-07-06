@@ -2,6 +2,7 @@ package com.example.calinraducalin.ikeaassembler.view.items;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,8 +14,7 @@ import com.example.calinraducalin.ikeaassembler.base.BaseCardScrollActivity;
 import com.example.calinraducalin.ikeaassembler.model.Item;
 import com.example.calinraducalin.ikeaassembler.presenter.items.ItemsPresenter;
 import com.example.calinraducalin.ikeaassembler.utlis.ProgressActivity;
-import com.example.calinraducalin.ikeaassembler.view.components.ComponentsActivity;
-import com.example.calinraducalin.ikeaassembler.view.warnings.WarningsActivity;
+import com.example.calinraducalin.ikeaassembler.view.start.StartActivity;
 
 import java.util.List;
 
@@ -23,10 +23,6 @@ import java.util.List;
  */
 public class ItemsActivity extends BaseCardScrollActivity implements IItemsView {
     private static final int DELETING_ACTIVITY = 200;
-    private static final int WARNINGS_ACTIVITY = 201;
-    private static final int COMPONENTS_ACTIVITY = 202;
-    public static final int NAVIGATE_COMPONENTS = 203;
-    public static final int NAVIGATE_FIRST_INSTRUCTION = 204;
 
 
     @Override
@@ -64,10 +60,14 @@ public class ItemsActivity extends BaseCardScrollActivity implements IItemsView 
     }
 
     @Override
-    public void itemSuccesfullyDeleted(boolean moreItems) {
+    public void itemSuccesfullyDeleted(boolean moreItems, int itemCode) {
         Log.d("SUCCESS", "ITEM DELETE");
+        if (itemCode == getItemCode()) {
+            setContinueValue(-1);
+        }
         if (moreItems) {
             cardScrollerView.getAdapter().notifyDataSetChanged();
+
         } else {
             finish();
         }
@@ -89,10 +89,12 @@ public class ItemsActivity extends BaseCardScrollActivity implements IItemsView 
 
     @Override
     public void startInstructions() {
-        Intent warningsIntent = new Intent(ItemsActivity.this, WarningsActivity.class);
-        warningsIntent.putExtra("itemIndex", lastSelectedItem);
-        warningsIntent.putExtra("itemCode", ((ItemsPresenter) presenter).getCurrentItemCode());
-        startActivityForResult(warningsIntent, WARNINGS_ACTIVITY);
+        setItemCode(((ItemsPresenter) presenter).getCurrentItemCode());
+        dismissActivity(StartActivity.WARNINGS_ACTIVITY);
+//        Intent warningsIntent = new Intent(ItemsActivity.this, WarningsActivity.class);
+//        warningsIntent.putExtra("itemIndex", lastSelectedItem);
+//        warningsIntent.putExtra("itemCode", ((ItemsPresenter) presenter).getCurrentItemCode());
+//        startActivityForResult(warningsIntent, WARNINGS_ACTIVITY);
     }
 
     @Override
@@ -100,31 +102,44 @@ public class ItemsActivity extends BaseCardScrollActivity implements IItemsView 
         if (requestCode == DELETING_ACTIVITY) {
             if (resultCode == Activity.RESULT_OK) {
                 Log.wtf("DELETE ITEM", "CONTINUE");
-                ((ItemsPresenter) this.presenter).deleteCurrentItem();
+                this.deleteItem();
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 Log.wtf("DELETE ITEM", "CANCEL");
-            }
-        } else if (requestCode == WARNINGS_ACTIVITY) {
-            if (resultCode == NAVIGATE_COMPONENTS) {
-                navigateToComponentsActivity();
-            }
-        } else if (requestCode == COMPONENTS_ACTIVITY) {
-            if (resultCode == NAVIGATE_FIRST_INSTRUCTION) {
-                navigateToInstructionsActivity();
             }
         }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void navigateToComponentsActivity() {
-        Intent componentsIntent = new Intent(ItemsActivity.this, ComponentsActivity.class);
-        componentsIntent.putExtra("itemIndex", lastSelectedItem);
-        componentsIntent.putExtra("itemCode", ((ItemsPresenter) presenter).getCurrentItemCode());
-        startActivityForResult(componentsIntent, COMPONENTS_ACTIVITY);
+//    private void navigateToComponentsActivity() {
+//        Intent componentsIntent = new Intent(ItemsActivity.this, ComponentsActivity.class);
+//        componentsIntent.putExtra("itemIndex", lastSelectedItem);
+//        componentsIntent.putExtra("itemCode", ((ItemsPresenter) presenter).getCurrentItemCode());
+//        startActivityForResult(componentsIntent, COMPONENTS_ACTIVITY);
+//    }
+//
+//    private void navigateToInstructionsActivity() {
+//        Log.wtf("ITEMS VIEW", "NAVIGATE INSTRUCTIONS");
+//    }
+
+    private void setItemCode(int code) {
+        // We need an Editor object to make preference changes.
+        // All objects are from android.context.Context
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt(ITEM_CODE, code);
+
+        // Commit the edits!
+        editor.commit();
     }
 
-    private void navigateToInstructionsActivity() {
-        Log.wtf("ITEMS VIEW", "NAVIGATE INSTRUCTIONS");
+    private void deleteItem() {
+        ((ItemsPresenter) this.presenter).deleteCurrentItem();
     }
+
+    private int getItemCode() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        return settings.getInt(ITEM_CODE, -1);
+    }
+
 }

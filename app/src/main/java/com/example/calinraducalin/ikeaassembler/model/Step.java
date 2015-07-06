@@ -2,6 +2,7 @@ package com.example.calinraducalin.ikeaassembler.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by calinraducalin on 26/06/15.
@@ -18,6 +19,10 @@ public class Step implements Serializable{
         this.substeps = new ArrayList<Substep>();
         this.number = number;
         this.tool = tool;
+    }
+
+    public List getSubsteps() {
+        return this.substeps;
     }
 
     public void addSubStep(Substep substep) {

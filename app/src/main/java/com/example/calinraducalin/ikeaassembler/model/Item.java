@@ -51,6 +51,10 @@ public class Item implements Serializable {
         return this.components;
     }
 
+    public Step getStep(int phase, int step) {
+        return this.phases.get(phase).getStep(step);
+    }
+
     public void addWarning(Warning warning) {
         this.warnings.add(warning);
     }

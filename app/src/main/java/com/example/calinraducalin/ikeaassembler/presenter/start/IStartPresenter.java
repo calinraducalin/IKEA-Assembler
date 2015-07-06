@@ -6,7 +6,6 @@ package com.example.calinraducalin.ikeaassembler.presenter.start;
 public interface IStartPresenter {
     void itemsSuccesfullyLoad();
     void showLoadingActivity();
-//    void itemExists(String itemName);
     void noNetworkError();
     void itemNotFoundError();
     void unKnownError();

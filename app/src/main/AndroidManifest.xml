@@ -36,6 +36,8 @@
         <activity android:name=".view.items.ItemsActivity"/>
         <activity android:name=".view.download.DownloadActivity"/>
         <activity android:name=".view.components.ComponentsActivity"/>
+        <activity android:name=".view.instructions.InstructionsActivity"/>
+
     </application>
 
 </manifest>

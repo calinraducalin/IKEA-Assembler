@@ -15,11 +15,15 @@ public interface IStartView extends IBaseView {
     int RESULT_CODE_ITEM_DOWNLOAD = 1003;
     int RESULT_CODE_CANCEL_DOWNLOAD = 1004;
 
-
     void navigateToScanActivity();
     void navigateToItemsActivity();
     void showLoadingActivity(String message);
     void showAlertDialogForType(int type);
     void dismissLoadingActivity();
     void itemsReady();
+
+    void navigateToWarningsActivity();
+    void navigateToComponentsActivity();
+    void navigateToInstructionsActivity();
+
 }

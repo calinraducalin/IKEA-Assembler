@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 import com.example.calinraducalin.ikeaassembler.R;
 import com.example.calinraducalin.ikeaassembler.base.BaseCardScrollActivity;
 import com.example.calinraducalin.ikeaassembler.presenter.components.ComponentsPresenter;
-import com.example.calinraducalin.ikeaassembler.view.items.ItemsActivity;
+import com.example.calinraducalin.ikeaassembler.view.start.StartActivity;
 
 import java.util.List;
 
@@ -21,10 +21,12 @@ public class ComponentsActivity extends BaseCardScrollActivity implements ICompo
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+        setContinueValue(2);
+
         presenter = new ComponentsPresenter(this);
 
-        itemIndex = getIntent().getExtras().getInt("itemIndex");
-        itemCode = getIntent().getExtras().getInt("itemCode");
+        itemIndex = getIntent().getExtras().getInt(ITEM_INDEX);
+        itemCode = getIntent().getExtras().getInt(ITEM_CODE);
 
     }
 
@@ -54,14 +56,12 @@ public class ComponentsActivity extends BaseCardScrollActivity implements ICompo
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if (i != lastSelectedItem) {
             super.onItemSelected(adapterView, view, i, l);
-//            Warning warning = ((Warning)adapterView.getItemAtPosition(i));
-//            audioHelpManager.speakTheText(warning.getText());
-//            ((ItemsPresenter) presenter).setCurrentItem(i);
         }
     }
 
     @Override
     public void navigateToInstructionsActivity() {
-        dismissActivity(ItemsActivity.NAVIGATE_FIRST_INSTRUCTION);
+        setContinueValue(1000); //1000 (first phase) + 0 (first step)
+        dismissActivity(StartActivity.INSTRUCTIONS_ACTIVITY);
     }
 }

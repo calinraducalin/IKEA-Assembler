@@ -9,7 +9,7 @@ import com.example.calinraducalin.ikeaassembler.R;
 import com.example.calinraducalin.ikeaassembler.base.BaseCardScrollActivity;
 import com.example.calinraducalin.ikeaassembler.model.Warning;
 import com.example.calinraducalin.ikeaassembler.presenter.warnings.WarningsPresenter;
-import com.example.calinraducalin.ikeaassembler.view.items.ItemsActivity;
+import com.example.calinraducalin.ikeaassembler.view.start.StartActivity;
 
 import java.util.List;
 
@@ -26,9 +26,10 @@ public class WarningsActivity extends BaseCardScrollActivity implements IWarning
         super.onCreate(bundle);
         presenter = new WarningsPresenter(this);
 
-        itemIndex = getIntent().getExtras().getInt("itemIndex");
-        itemCode = getIntent().getExtras().getInt("itemCode");
+        itemIndex = getIntent().getExtras().getInt(ITEM_INDEX);
+        itemCode = getIntent().getExtras().getInt(ITEM_CODE);
 
+        setContinueValue(1);
     }
 
     @Override
@@ -65,6 +66,7 @@ public class WarningsActivity extends BaseCardScrollActivity implements IWarning
 
     @Override
     public void navigateToComponentsView() {
-        dismissActivity(ItemsActivity.NAVIGATE_COMPONENTS);
+        dismissActivity(StartActivity.COMPONENTS_ACTIVITY);
     }
+
 }

@@ -62,6 +62,10 @@ public class ItemsPresenter extends BasePresenter implements IItemsPresenter {
         return ItemsManager.getSharedInstance().getCodeForItem(currentItem);
     }
 
+    public int getItemIndex(int itemCode) {
+        return ItemsManager.getSharedInstance().getIndexForCode(itemCode);
+    }
+
 
     public void setCurrentItem(int currentItem) {
         this.currentItem = currentItem;
@@ -73,9 +77,9 @@ public class ItemsPresenter extends BasePresenter implements IItemsPresenter {
     }
 
     @Override
-    public void itemSuccesfullyDeleted() {
+    public void itemSuccesfullyDeleted(int code) {
         boolean moreItems = this.getItemsCount() > 0;
-        this.view.itemSuccesfullyDeleted(moreItems);
+        this.view.itemSuccesfullyDeleted(moreItems, code);
     }
 
     @Override

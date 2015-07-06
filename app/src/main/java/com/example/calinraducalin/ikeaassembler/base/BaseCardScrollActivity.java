@@ -1,7 +1,5 @@
 package com.example.calinraducalin.ikeaassembler.base;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -106,13 +104,4 @@ public abstract class BaseCardScrollActivity extends BaseActivity implements IBa
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {}
 
-    protected void dismissActivity(int resultCode) {
-        Intent data = new Intent();
-        if (getParent() == null) {
-            setResult(resultCode, data);
-        } else {
-            getParent().setResult(Activity.RESULT_OK, data);
-        }
-        finish();
-    }
 }

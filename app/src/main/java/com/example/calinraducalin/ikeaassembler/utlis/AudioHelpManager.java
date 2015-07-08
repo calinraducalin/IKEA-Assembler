@@ -35,7 +35,7 @@ public class AudioHelpManager {
     public void disable(){
         if (textToSpeech != null) {
             textToSpeech.stop();
-            textToSpeech.shutdown();
+//            textToSpeech.shutdown();
         }
     }
 

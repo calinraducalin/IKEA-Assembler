@@ -49,7 +49,13 @@ public class Step implements Serializable{
         if (tool != null) {
             toolAndComponents.add(tool);
         }
-        toolAndComponents.addAll(this.components);
+        for (StepComponent component : this.components) {
+            toolAndComponents.add(component);
+            String extraImage = component.getExtraImage();
+            if (extraImage != null) {
+                toolAndComponents.add(extraImage);
+            }
+        }
 
         return toolAndComponents;
     }

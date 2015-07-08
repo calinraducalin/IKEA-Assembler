@@ -70,6 +70,11 @@ public class ComponentsCardScrollAdapter extends BaseCardScrollAdapter {
             codeTextView.setText(component.getCode().toString());
 
             return inflatedLayout;
+        } else if (toolOrComponent instanceof String) {
+            ImageView imageView = new ImageView(context);
+            imageView.setImageBitmap(getBitmap("/" + itemCode + "/" + toolOrComponent));
+
+            return imageView;
         }
 
         return new View(context);

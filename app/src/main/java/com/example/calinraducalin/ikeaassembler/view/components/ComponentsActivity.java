@@ -1,5 +1,7 @@
 package com.example.calinraducalin.ikeaassembler.view.components;
 
+import android.content.Context;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -9,6 +11,7 @@ import com.example.calinraducalin.ikeaassembler.R;
 import com.example.calinraducalin.ikeaassembler.base.BaseCardScrollActivity;
 import com.example.calinraducalin.ikeaassembler.presenter.components.ComponentsPresenter;
 import com.example.calinraducalin.ikeaassembler.view.start.StartActivity;
+import com.google.android.glass.media.Sounds;
 
 import java.util.List;
 
@@ -33,7 +36,8 @@ public class ComponentsActivity extends BaseCardScrollActivity implements ICompo
 
         forStep = extras.getBoolean(FOR_STEP, false);
         if (forStep) {
-            audioHelpManager.speakTheText("For this step, you will use.");
+            AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+            audioManager.playSoundEffect(Sounds.SUCCESS);
             phaseIndex = extras.getInt(PHASE_INDEX);
             stepIndex = extras.getInt(STEP_INDEX);
         } else {

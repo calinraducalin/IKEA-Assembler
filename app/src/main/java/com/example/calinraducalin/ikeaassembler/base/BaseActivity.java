@@ -44,11 +44,11 @@ public abstract class BaseActivity extends Activity {
         audioHelpManager.setContext(context);
     }
 
-    @Override
-    protected void onDestroy() {
+//    @Override
+//    protected void onDestroy() {
 //        audioHelpManager.disable();
-        super.onDestroy();
-    }
+//        super.onDestroy();
+//    }
 
     @Override
     public boolean onGenericMotionEvent(MotionEvent event) {

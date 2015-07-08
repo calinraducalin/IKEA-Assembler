@@ -38,7 +38,15 @@ public class InstructionsPresenter extends BasePresenter {
             case IInstructionsView.MENU_SHOW_COMPONENTS:
                 this.view.showToolsAndComponents();
                 return true;
-
+            case IInstructionsView.MENU_NEXT_PHASE:
+                this.view.showNextPhaseOverview();
+                return true;
+            case IInstructionsView.MENU_REPEAT_PHASE:
+                this.view.repeatThisPhase();
+                return true;
+            case IInstructionsView.MENU_BACK_PHASE_OVERVIEW:
+                this.view.showPreviousPhaseOverview();
+                return true;
             default:
                 return false;
         }
@@ -62,6 +70,10 @@ public class InstructionsPresenter extends BasePresenter {
 
     public boolean isLastPhaseForItem(int index, int phase) {
         return ItemsManager.getSharedInstance().isLastPhase(index, phase);
+    }
+
+    public boolean shouldRepeatPhase(int itemIndex, int phaseIndex) {
+        return ItemsManager.getSharedInstance().shouldRepeatPhase(itemIndex, phaseIndex);
     }
 
     public boolean canDisplayComponents(int index, int phase, int step) {

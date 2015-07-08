@@ -56,6 +56,13 @@ public class StartPresenter extends BasePresenter {
         return ItemsManager.getSharedInstance().getPhasesCount(itemIndex);
     }
 
+    public int  getStepsCountForPhase(int phaseIndex) {
+        if (phaseIndex < 0) {
+            return 0;
+        }
+        return ItemsManager.getSharedInstance().getStepsCountForPhase(itemIndex, phaseIndex);
+    }
+
 
     public int getItemIndex() {
         return itemIndex;
@@ -74,7 +81,7 @@ public class StartPresenter extends BasePresenter {
         return 0;
     }
 
-    private void handleContinue(){
+    public void handleContinue(){
         switch (continueValue) {
             case 1:
                 this.view.navigateToWarningsActivity();

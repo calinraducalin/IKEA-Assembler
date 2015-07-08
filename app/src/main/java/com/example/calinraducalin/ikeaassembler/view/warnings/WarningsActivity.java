@@ -17,19 +17,30 @@ import java.util.List;
  * Created by calinraducalin on 29/04/15.
  */
 public class WarningsActivity extends BaseCardScrollActivity implements IWarningsView, AdapterView.OnItemSelectedListener{
+    public static final String FOR_STEP = "forStep";
 
-//    private static final int DELETING_ACTIVITY = 200;
     private int totalWarnings;
+    private boolean forStep;
+    private int phaseIndex;
+    private int stepIndex;
 
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         presenter = new WarningsPresenter(this);
 
-        itemIndex = getIntent().getExtras().getInt(ITEM_INDEX);
-        itemCode = getIntent().getExtras().getInt(ITEM_CODE);
+        Bundle extras = getIntent().getExtras();
+        itemIndex = extras.getInt(ITEM_INDEX);
+        itemCode = extras.getInt(ITEM_CODE);
+        forStep = extras.getBoolean(FOR_STEP, false);
 
-        setContinueValue(1);
+        if (forStep) {
+            phaseIndex = extras.getInt(PHASE_INDEX);
+            stepIndex = extras.getInt(STEP_INDEX);
+        } else {
+            setContinueValue(1);
+        }
+
     }
 
     @Override
@@ -45,11 +56,15 @@ public class WarningsActivity extends BaseCardScrollActivity implements IWarning
     protected void setupMenu(int featureId, Menu menu) {
         super.setupMenu(featureId, menu);
 
-        //default menu options
-        if (lastSelectedItem == totalWarnings - 1) {
-            menu.add(0, MENU_COMPONENTS, Menu.NONE, R.string.action_components).setIcon(R.drawable.ic_arrow_right_50);
+        if (forStep) {
+
         } else {
-            menu.add(0, MENU_SKIP, Menu.NONE, R.string.action_skip_warnings).setIcon(R.drawable.ic_share_50);
+            if (lastSelectedItem == totalWarnings - 1) {
+                menu.add(0, MENU_COMPONENTS, Menu.NONE, R.string.action_components).setIcon(R.drawable.ic_arrow_right_50);
+            } else {
+                menu.add(0, MENU_SKIP, Menu.NONE, R.string.action_skip_warnings).setIcon(R.drawable.ic_share_50);
+            }
+            menu.add(0, MENU_BACK_ITEMS, Menu.NONE, R.string.action_back_items).setIcon(R.drawable.ic_reply_50);
         }
 
     }
@@ -68,4 +83,8 @@ public class WarningsActivity extends BaseCardScrollActivity implements IWarning
         dismissActivity(StartActivity.COMPONENTS_ACTIVITY);
     }
 
+    @Override
+    public void navigateBackToItemsActivity() {
+        dismissActivity(StartActivity.ITEMS_ACTIVITY);
+    }
 }

@@ -22,6 +22,7 @@ public class PhaseOverviewActivity extends BaseActivity implements IPhaseOvervie
     private int itemIndex;
     private int phaseIndex;
     private int totalPhases;
+    private int lastPhaseStepsCount;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -33,10 +34,12 @@ public class PhaseOverviewActivity extends BaseActivity implements IPhaseOvervie
         itemCode = extras.getInt(ITEM_CODE);
         phaseIndex = extras.getInt(PHASE_INDEX);
         totalPhases = extras.getInt(StartActivity.TOTAL_PHASES);
-
+        lastPhaseStepsCount = extras.getInt(StartActivity.STEP_INDEX);
 //        setContentView(R.layout.activity_phase_overview);
         AssemblyPhase phase = ((PhaseOverviewPresenter) presenter).getPhaseForItem(itemIndex, phaseIndex);
         buildView(phase);
+
+        audioHelpManager.speakTheText(phase.getName());
     }
 
 //    @Override
@@ -50,7 +53,19 @@ public class PhaseOverviewActivity extends BaseActivity implements IPhaseOvervie
     protected void setupMenu(int featureId, Menu menu) {
         menu.clear();
 
-        menu.add(0, MENU_START_PHASE, Menu.NONE, R.string.action_start_phase).setIcon(R.drawable.ic_angle_50);
+        menu.add(0, MENU_START_PHASE, Menu.NONE, R.string.action_start_phase).setIcon(R.drawable.ic_forward_50);
+
+        if (phaseIndex == 0) {
+            menu.add(0, MENU_BACK_COMPONENTS, Menu.NONE, R.string.action_back_components).setIcon(R.drawable.ic_arrow_left_50);
+        } else {
+            menu.add(0, MENU_PREVIOUS_STEP, Menu.NONE, R.string.action_previos_step).setIcon(R.drawable.ic_arrow_left_50);
+            menu.add(0, MENU_PREVIOUS_PHASE, Menu.NONE, R.string.action_previos_phase).setIcon(R.drawable.ic_reply_50);
+        }
+
+        if (phaseIndex < totalPhases - 1) {
+            menu.add(0, MENU_NEXT_PHASE, Menu.NONE, R.string.action_skip_phase).setIcon(R.drawable.ic_share_50);
+        }
+
 
         if (featureId == WindowUtils.FEATURE_VOICE_COMMANDS) {
             menu.add(0, MENU_BACK, Menu.NONE, R.string.action_back).setIcon(null);
@@ -66,6 +81,30 @@ public class PhaseOverviewActivity extends BaseActivity implements IPhaseOvervie
     @Override
     public void navigateToMainMenu() {
         finish();
+    }
+
+    @Override
+    public void navigateToPreviousStep() {
+        setContinueValue(1000 * (phaseIndex) + lastPhaseStepsCount);
+        dismissActivity(StartActivity.INSTRUCTIONS_ACTIVITY);
+    }
+
+    @Override
+    public void navigateToNextPhase() {
+        setContinueValue(1000 * (phaseIndex + 2));
+        dismissActivity(StartActivity.PHASE_OVERVIEW_ACTIVITY);
+    }
+
+    @Override
+    public void navigateToPreviousPhase() {
+        setContinueValue(1000 * (phaseIndex));
+        dismissActivity(StartActivity.PHASE_OVERVIEW_ACTIVITY);
+    }
+
+    @Override
+    public void navigateToComponents() {
+        setContinueValue(2);
+        dismissActivity(StartActivity.COMPONENTS_ACTIVITY);
     }
 
     @Override

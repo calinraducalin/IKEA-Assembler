@@ -33,9 +33,11 @@ public class ComponentsActivity extends BaseCardScrollActivity implements ICompo
 
         forStep = extras.getBoolean(FOR_STEP, false);
         if (forStep) {
+            audioHelpManager.speakTheText("For this step, you will use.");
             phaseIndex = extras.getInt(PHASE_INDEX);
             stepIndex = extras.getInt(STEP_INDEX);
         } else {
+            audioHelpManager.speakTheText("Please make sure you have everything you need for assembling this item.");
             setContinueValue(2);
         }
 
@@ -61,10 +63,13 @@ public class ComponentsActivity extends BaseCardScrollActivity implements ICompo
 
         if (forStep) {
             menu.add(0, MENU_HIDE_COMPONENTS, Menu.NONE, R.string.action_hide_components).setIcon(R.drawable.ic_arrow_down_50);
-        } else if (lastSelectedItem == totalComponents - 1) {
-            menu.add(0, MENU_BEGIN_ASSAMBLING, Menu.NONE, R.string.action_begin_assembly).setIcon(R.drawable.ic_arrow_right_50);
         } else {
-            menu.add(0, MENU_SKIP_COMPONENTS, Menu.NONE, R.string.action_skip_components).setIcon(R.drawable.ic_share_50);
+            if (lastSelectedItem == totalComponents - 1) {
+                menu.add(0, MENU_BEGIN_ASSAMBLING, Menu.NONE, R.string.action_begin_assembly).setIcon(R.drawable.ic_arrow_right_50);
+            } else {
+                menu.add(0, MENU_SKIP_COMPONENTS, Menu.NONE, R.string.action_skip_components).setIcon(R.drawable.ic_share_50);
+            }
+            menu.add(0, MENU_BACK_WARNINGS, Menu.NONE, R.string.action_back_warnings).setIcon(R.drawable.ic_reply_50);
         }
 
     }
@@ -80,6 +85,12 @@ public class ComponentsActivity extends BaseCardScrollActivity implements ICompo
     public void navigateToInstructionsActivity() {
         setContinueValue(1000); //1000 (first phase) + 0 (first step)
         dismissActivity(StartActivity.PHASE_OVERVIEW_ACTIVITY);
+    }
+
+    @Override
+    public void navigateBackToWarningsActivity() {
+        setContinueValue(1); //1 == Warnings
+        dismissActivity(StartActivity.WARNINGS_ACTIVITY);
     }
 
     @Override

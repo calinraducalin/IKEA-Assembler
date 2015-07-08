@@ -90,7 +90,7 @@ public class ItemsManager {
     }
 
     public AssemblyPhase getPhaseForItem(int index, int phase) {
-        return ((Item) this.items.get(index)).getAssamblyPhase(index);
+        return ((Item) this.items.get(index)).getAssamblyPhase(phase);
     }
 
     public void deleteItemFromLocalDataStore(int index) {
@@ -126,8 +126,16 @@ public class ItemsManager {
         return  ((Item) this.items.get(index)).isLastPhase(phase);
     }
 
+    public boolean shouldRepeatPhase(int index, int phase) {
+        return  ((Item) this.items.get(index)).shouldRepeatPhase(phase);
+    }
+
     public int getPhasesCount(int index) {
         return  ((Item) this.items.get(index)).getPhasesCount();
+    }
+
+    public int getStepsCountForPhase(int itemIndex, int phaseIndex) {
+        return  ((Item) this.items.get(itemIndex)).getStepsCountForPhase(phaseIndex);
     }
 
     private void saveItems() {

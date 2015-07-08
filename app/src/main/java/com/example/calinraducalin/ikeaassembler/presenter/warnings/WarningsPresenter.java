@@ -38,6 +38,9 @@ public class WarningsPresenter extends BasePresenter {
             case IWarningsView.MENU_COMPONENTS:
                 this.view.navigateToComponentsView();
                 return true;
+            case IWarningsView.MENU_BACK_ITEMS:
+                this.view.navigateBackToItemsActivity();
+                return true;
 
             default:
                 return false;

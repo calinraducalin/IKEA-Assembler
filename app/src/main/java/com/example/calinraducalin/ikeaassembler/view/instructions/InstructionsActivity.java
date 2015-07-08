@@ -10,6 +10,7 @@ import com.example.calinraducalin.ikeaassembler.R;
 import com.example.calinraducalin.ikeaassembler.base.BaseCardScrollActivity;
 import com.example.calinraducalin.ikeaassembler.presenter.instructions.InstructionsPresenter;
 import com.example.calinraducalin.ikeaassembler.view.components.ComponentsActivity;
+import com.example.calinraducalin.ikeaassembler.view.start.StartActivity;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class InstructionsActivity extends BaseCardScrollActivity implements IIns
     private int stepIndex;
     boolean isLastStep;
     boolean isLastPhase;
+    boolean shouldRepeatPhase;
     boolean canDisplayComponents;
 
     @Override
@@ -38,10 +40,13 @@ public class InstructionsActivity extends BaseCardScrollActivity implements IIns
         stepIndex = extras.getInt(STEP_INDEX);
 
         setContinueValue(1000 * (phaseIndex + 1) + stepIndex);
-        showToolsAndComponents();
         isLastPhase = ((InstructionsPresenter) presenter).isLastPhaseForItem(itemIndex, phaseIndex);
         isLastStep = ((InstructionsPresenter) presenter).isLastStepForPhase(itemIndex, phaseIndex, stepIndex - 1);
+        shouldRepeatPhase = ((InstructionsPresenter) presenter).shouldRepeatPhase(itemIndex, phaseIndex);
         canDisplayComponents = ((InstructionsPresenter) presenter).canDisplayComponents(itemIndex, phaseIndex, stepIndex - 1);
+        if (canDisplayComponents) {
+            showToolsAndComponents();
+        }
     }
 
     @Override
@@ -64,16 +69,33 @@ public class InstructionsActivity extends BaseCardScrollActivity implements IIns
             menu.add(0, MENU_SHOW_COMPONENTS, Menu.NONE, R.string.action_show_components).setIcon(R.drawable.ic_arrow_up_50);
         }
 
+
         if (isLastPhase && isLastStep) {
 
-        }else if (lastSelectedItem == totalSubsteps - 1) {
-            menu.add(0, MENU_NEXT_STEP, Menu.NONE, R.string.action_next_step).setIcon(R.drawable.ic_arrow_right_50);
+        } else if (lastSelectedItem == totalSubsteps - 1) {
+            if (isLastStep) {
+                if (shouldRepeatPhase) {
+                    menu.add(0, MENU_REPEAT_PHASE, Menu.NONE, R.string.action_repeat_phase).setIcon(R.drawable.ic_reply_50);
+                }
+                menu.add(0, MENU_NEXT_PHASE, Menu.NONE, R.string.action_next_phase).setIcon(R.drawable.ic_arrow_right_50);
+            } else {
+                menu.add(0, MENU_NEXT_STEP, Menu.NONE, R.string.action_next_step).setIcon(R.drawable.ic_arrow_right_50);
+            }
             menu.add(0, MENU_SHOW_COMPONENTS, Menu.NONE, R.string.action_show_components).setIcon(R.drawable.ic_arrow_up_50);
         } else {
-            menu.add(0, MENU_SKIP_STEP, Menu.NONE, R.string.action_skip_step).setIcon(R.drawable.ic_share_50);
+            if (isLastStep) {
+                if (shouldRepeatPhase) {
+                    menu.add(0, MENU_REPEAT_PHASE, Menu.NONE, R.string.action_repeat_phase).setIcon(R.drawable.ic_reply_50);
+                }
+                menu.add(0, MENU_NEXT_PHASE, Menu.NONE, R.string.action_next_phase).setIcon(R.drawable.ic_share_50);
+            } else {
+                menu.add(0, MENU_SKIP_STEP, Menu.NONE, R.string.action_skip_step).setIcon(R.drawable.ic_share_50);
+            }
         }
 
-        if (phaseIndex > 0 || stepIndex > 1) {
+        if (stepIndex == 1) {
+            menu.add(0, MENU_BACK_PHASE_OVERVIEW, Menu.NONE, R.string.action_back_phase_overview).setIcon(R.drawable.ic_arrow_left_50);
+        } else {
             menu.add(0, MENU_PREVIOUS_STEP, Menu.NONE, R.string.action_previos_step).setIcon(R.drawable.ic_arrow_left_50);
         }
 
@@ -92,23 +114,58 @@ public class InstructionsActivity extends BaseCardScrollActivity implements IIns
             if (isLastStep) {
                 phaseIndex++;
                 stepIndex = 0;
+                setContinueValue(1000 * (phaseIndex + 1));
+                dismissActivity(StartActivity.PHASE_OVERVIEW_ACTIVITY);
             } else {
                 stepIndex++;
+//                isLastPhase = ((InstructionsPresenter) presenter).isLastPhaseForItem(itemIndex, phaseIndex);
+                isLastStep = ((InstructionsPresenter) presenter).isLastStepForPhase(itemIndex, phaseIndex, stepIndex - 1);
+                canDisplayComponents = ((InstructionsPresenter) presenter).canDisplayComponents(itemIndex, phaseIndex, stepIndex - 1);
+                setContinueValue(1000 * (phaseIndex + 1) + stepIndex);
+                if (canDisplayComponents) {
+                    showToolsAndComponents();
+                }
+                setupCardsList();
             }
-            isLastPhase = ((InstructionsPresenter) presenter).isLastPhaseForItem(itemIndex, phaseIndex);
-            isLastStep = ((InstructionsPresenter) presenter).isLastStepForPhase(itemIndex, phaseIndex, stepIndex);
-            canDisplayComponents = ((InstructionsPresenter) presenter).canDisplayComponents(itemIndex, phaseIndex, stepIndex);
-
-            setContinueValue(1000 * (phaseIndex + 1) + stepIndex);
-            setupCardsList();
-            showToolsAndComponents();
         }
+    }
 
+    @Override
+    public void showPreviousPhaseOverview() {
+        setContinueValue(1000 * (phaseIndex + 1));
+        dismissActivity(StartActivity.PHASE_OVERVIEW_ACTIVITY);
+    }
+
+    @Override
+    public void showNextPhaseOverview() {
+        phaseIndex++;
+        stepIndex = 0;
+        setContinueValue(1000 * (phaseIndex + 1));
+        dismissActivity(StartActivity.PHASE_OVERVIEW_ACTIVITY);
     }
 
     @Override
     public void showPreviousStep() {
+        stepIndex--;
+        isLastStep = ((InstructionsPresenter) presenter).isLastStepForPhase(itemIndex, phaseIndex, stepIndex - 1);
+        canDisplayComponents = ((InstructionsPresenter) presenter).canDisplayComponents(itemIndex, phaseIndex, stepIndex - 1);
+        setContinueValue(1000 * (phaseIndex + 1) + stepIndex);
+        if (canDisplayComponents) {
+            showToolsAndComponents();
+        }
+        setupCardsList();
+    }
 
+    @Override
+    public void repeatThisPhase() {
+        stepIndex = 1;
+        isLastStep = ((InstructionsPresenter) presenter).isLastStepForPhase(itemIndex, phaseIndex, stepIndex - 1);
+        canDisplayComponents = ((InstructionsPresenter) presenter).canDisplayComponents(itemIndex, phaseIndex, stepIndex - 1);
+        setContinueValue(1000 * (phaseIndex + 1) + stepIndex);
+        if (canDisplayComponents) {
+            showToolsAndComponents();
+        }
+        setupCardsList();
     }
 
     @Override
@@ -122,7 +179,6 @@ public class InstructionsActivity extends BaseCardScrollActivity implements IIns
 
         startActivity(componentsIntent);
     }
-
 
 
 }

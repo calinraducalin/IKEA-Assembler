@@ -8,9 +8,11 @@ import com.example.calinraducalin.ikeaassembler.base.IBaseView;
 public interface IItemsView extends IBaseView{
     int MENU_START_BEGINNING = 3;
     int MENU_DELETE = 4;
+    int MENU_CONTINUE = 5;
 
     void itemSuccesfullyDeleted(boolean moreItems, int itemCode);
     void itemDeletionError();
     void showDeleteGrace();
     void startInstructions();
+    void continueThisItem();
 }

@@ -43,6 +43,9 @@ public class ItemsPresenter extends BasePresenter implements IItemsPresenter {
             case IItemsView.MENU_DELETE:
                 this.view.showDeleteGrace();
                 return true;
+            case IItemsView.MENU_CONTINUE:
+                this.view.continueThisItem();
+                return true;
 
             default:
                 return false;

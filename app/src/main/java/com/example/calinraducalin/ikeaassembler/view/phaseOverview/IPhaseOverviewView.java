@@ -7,7 +7,16 @@ import com.example.calinraducalin.ikeaassembler.base.IBaseView;
  */
 public interface IPhaseOverviewView extends IBaseView {
     int MENU_START_PHASE = 3;
+    int MENU_PREVIOUS_STEP = 4;
+    int MENU_NEXT_PHASE = 5;
+    int MENU_PREVIOUS_PHASE = 6;
+    int MENU_BACK_COMPONENTS = 7;
+
 
     void navigateToFirstStep();
     void navigateToMainMenu();
+    void navigateToPreviousStep();
+    void navigateToNextPhase();
+    void navigateToPreviousPhase();
+    void navigateToComponents();
 }

@@ -24,6 +24,18 @@ public class PhaseOverviewPresenter extends BasePresenter {
             case IPhaseOverviewView.MENU_BACK:
                 this.view.navigateToMainMenu();
                 return true;
+            case IPhaseOverviewView.MENU_PREVIOUS_STEP:
+                this.view.navigateToPreviousStep();
+                return true;
+            case IPhaseOverviewView.MENU_NEXT_PHASE:
+                this.view.navigateToNextPhase();
+                return true;
+            case IPhaseOverviewView.MENU_PREVIOUS_PHASE:
+                this.view.navigateToPreviousPhase();
+                return true;
+            case IPhaseOverviewView.MENU_BACK_COMPONENTS:
+                this.view.navigateToComponents();
+                return true;
 
             default:
                 return false;

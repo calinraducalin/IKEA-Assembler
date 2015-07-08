@@ -40,6 +40,9 @@ public class ComponentsPresenter extends BasePresenter {
             case IComponentsView.MENU_HIDE_COMPONENTS:
                 this.view.hideComponents();
                 return true;
+            case IComponentsView.MENU_BACK_WARNINGS:
+                this.view.navigateBackToWarningsActivity();
+                return true;
 
             default:
                 return false;

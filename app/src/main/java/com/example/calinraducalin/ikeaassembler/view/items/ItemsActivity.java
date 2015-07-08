@@ -23,12 +23,15 @@ import java.util.List;
  */
 public class ItemsActivity extends BaseCardScrollActivity implements IItemsView {
     private static final int DELETING_ACTIVITY = 200;
-
+    private boolean isContinue;
+    private boolean canContinueItem;
 
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         presenter = new ItemsPresenter(this);
+        itemCode = getIntent().getExtras().getInt(ITEM_CODE, -1);
+        isContinue = getIntent().getExtras().getBoolean(CONTINUE_KEY, false);
     }
 
     @Override
@@ -43,7 +46,9 @@ public class ItemsActivity extends BaseCardScrollActivity implements IItemsView 
     protected void setupMenu(int featureId, Menu menu) {
         super.setupMenu(featureId, menu);
 
-        //default menu options
+        if (isContinue && canContinueItem) {
+            menu.add(0, MENU_CONTINUE, Menu.NONE, R.string.action_continue).setIcon(R.drawable.ic_forward_50);
+        }
         menu.add(0, MENU_START_BEGINNING, Menu.NONE, R.string.action_start_beginning).setIcon(R.drawable.ic_angle_50);
         menu.add(0, MENU_DELETE, Menu.NONE, R.string.action_delete).setIcon(R.drawable.ic_delete_50);
 
@@ -56,6 +61,7 @@ public class ItemsActivity extends BaseCardScrollActivity implements IItemsView 
             Item item = ((Item)adapterView.getItemAtPosition(i));
             audioHelpManager.speakTheText(item.getName());
             ((ItemsPresenter) presenter).setCurrentItem(i);
+            canContinueItem = item.getCode().intValue() == itemCode;
         }
     }
 
@@ -91,10 +97,11 @@ public class ItemsActivity extends BaseCardScrollActivity implements IItemsView 
     public void startInstructions() {
         setItemCode(((ItemsPresenter) presenter).getCurrentItemCode());
         dismissActivity(StartActivity.WARNINGS_ACTIVITY);
-//        Intent warningsIntent = new Intent(ItemsActivity.this, WarningsActivity.class);
-//        warningsIntent.putExtra("itemIndex", lastSelectedItem);
-//        warningsIntent.putExtra("itemCode", ((ItemsPresenter) presenter).getCurrentItemCode());
-//        startActivityForResult(warningsIntent, WARNINGS_ACTIVITY);
+    }
+
+    @Override
+    public void continueThisItem() {
+        dismissActivity(StartActivity.CONTINUE_ACTIVITY);
     }
 
     @Override
@@ -110,17 +117,6 @@ public class ItemsActivity extends BaseCardScrollActivity implements IItemsView 
 
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-//    private void navigateToComponentsActivity() {
-//        Intent componentsIntent = new Intent(ItemsActivity.this, ComponentsActivity.class);
-//        componentsIntent.putExtra("itemIndex", lastSelectedItem);
-//        componentsIntent.putExtra("itemCode", ((ItemsPresenter) presenter).getCurrentItemCode());
-//        startActivityForResult(componentsIntent, COMPONENTS_ACTIVITY);
-//    }
-//
-//    private void navigateToInstructionsActivity() {
-//        Log.wtf("ITEMS VIEW", "NAVIGATE INSTRUCTIONS");
-//    }
 
     private void setItemCode(int code) {
         // We need an Editor object to make preference changes.
@@ -141,5 +137,6 @@ public class ItemsActivity extends BaseCardScrollActivity implements IItemsView 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         return settings.getInt(ITEM_CODE, -1);
     }
+
 
 }

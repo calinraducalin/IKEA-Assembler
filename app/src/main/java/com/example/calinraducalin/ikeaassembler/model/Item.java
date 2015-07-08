@@ -116,8 +116,15 @@ public class Item implements Serializable {
         return this.phases.size() == phase + 1;
     }
 
+    public boolean shouldRepeatPhase(int phase) {
+        return ((AssemblyPhase) this.phases.get(phase)).getRepeat() > 1;
+    }
+
     public int getPhasesCount() {
         return this.phases.size();
     }
 
+    public int getStepsCountForPhase(int phaseIndex) {
+        return ((AssemblyPhase) this.phases.get(phaseIndex)).getStepsCount();
+    }
 }

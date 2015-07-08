@@ -8,6 +8,9 @@ import com.example.calinraducalin.ikeaassembler.base.IBaseView;
 public interface IWarningsView extends IBaseView{
     int MENU_SKIP = 3;
     int MENU_COMPONENTS = 4;
+    int MENU_BACK_ITEMS = 5;
 
     void navigateToComponentsView();
+    void navigateBackToItemsActivity();
+
 }

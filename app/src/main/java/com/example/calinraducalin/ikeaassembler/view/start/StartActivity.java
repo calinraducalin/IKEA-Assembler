@@ -28,12 +28,13 @@ public class StartActivity extends BaseActivity implements IStartView {
     public static final String TOTAL_PHASES = "totalPhases";
     private static final int QR_CODE_MODE = 100;
     private static final int LOADING_ACTIVITY = 101;
-    private static final int ITEMS_ACTIVITY = 102;
+    public static final int ITEMS_ACTIVITY = 102;
     private static final int DOWNLOAD_ACTIVITY = 103;
     public static final int WARNINGS_ACTIVITY = 104;
     public static final int COMPONENTS_ACTIVITY = 105;
     public static final int INSTRUCTIONS_ACTIVITY = 106;
     public static final int PHASE_OVERVIEW_ACTIVITY = 107;
+    public static final int CONTINUE_ACTIVITY = 108;
 
     private static final String MESSAGE = "message";
     private static final String SCAN_RESULT = "SCAN_RESULT";
@@ -127,7 +128,11 @@ public class StartActivity extends BaseActivity implements IStartView {
             navigateToPhaseOverviewActivity();
         } else if (resultCode == INSTRUCTIONS_ACTIVITY) {
             navigateToInstructionsActivity();
-        } else {
+        } else if (resultCode == ITEMS_ACTIVITY) {
+            navigateToItemsActivity();
+        } else if (resultCode == CONTINUE_ACTIVITY) {
+            ((StartPresenter) this.presenter).handleContinue();
+        }else {
             super.onActivityResult(requestCode, resultCode, data);
         }
 
@@ -155,6 +160,8 @@ public class StartActivity extends BaseActivity implements IStartView {
     @Override
     public void navigateToItemsActivity() {
         Intent intent = new Intent(StartActivity.this, ItemsActivity.class);
+        intent.putExtra(ITEM_CODE, ((StartPresenter) presenter).getItemCode());
+        intent.putExtra(CONTINUE_KEY, getContinueValue() > 0);
         startActivityForResult(intent, ITEMS_ACTIVITY);
     }
 
@@ -236,6 +243,7 @@ public class StartActivity extends BaseActivity implements IStartView {
         phaseIntent.putExtra(ITEM_INDEX, ((StartPresenter) presenter).getItemIndex());
         phaseIntent.putExtra(ITEM_CODE, ((StartPresenter) presenter).getItemCode());
         phaseIntent.putExtra(PHASE_INDEX, phaseIndex);
+        phaseIntent.putExtra(STEP_INDEX, ((StartPresenter) presenter).getStepsCountForPhase(phaseIndex - 1));
         phaseIntent.putExtra(TOTAL_PHASES, ((StartPresenter) presenter).getPhasesCount());
 
         startActivityForResult(phaseIntent, PHASE_OVERVIEW_ACTIVITY);

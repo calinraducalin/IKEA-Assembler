@@ -47,6 +47,9 @@ public class InstructionsPresenter extends BasePresenter {
             case IInstructionsView.MENU_BACK_PHASE_OVERVIEW:
                 this.view.showPreviousPhaseOverview();
                 return true;
+            case IInstructionsView.MENU_SHOW_WARNINGS:
+                this.view.showWarningsForStep();
+                return true;
             default:
                 return false;
         }
@@ -80,4 +83,7 @@ public class InstructionsPresenter extends BasePresenter {
         return ItemsManager.getSharedInstance().getToolsAndComponentsForStep(index, phase, step).size() > 0;
     }
 
+    public boolean areWarningsToDisplay(int index, int phase, int step) {
+        return ItemsManager.getSharedInstance().areWarningsToDisplay(index, phase, step);
+    }
 }

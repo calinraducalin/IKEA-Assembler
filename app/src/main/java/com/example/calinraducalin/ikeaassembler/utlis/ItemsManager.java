@@ -71,18 +71,25 @@ public class ItemsManager {
         return -1;
     }
 
-    public List<Object> getItems() {
+    public List getItems() {
         return items;
     }
-    public List<Object> getWarningsForItem(int index) {
+    public List getWarningsForItem(int index) {
         return ((Item) this.items.get(index)).getWarnings();
     }
-    public List<Object> getToolsAndComponentsForItem(int index) {
+    public List getWarningsForStep(int index, int phase, int step) {
+        return ((Item) this.items.get(index)).getStep(phase, step).getWarnings();
+    }
+    public List getToolsAndComponentsForItem(int index) {
         return ((Item) this.items.get(index)).getToolsAndComponents();
     }
 
     public List getToolsAndComponentsForStep(int index, int phase, int step) {
         return this.getStep(index, phase, step).getToolsAndComponents();
+    }
+
+    public boolean areWarningsToDisplay(int index, int phase, int step) {
+        return this.getStep(index,phase, step).getWarnings() != null;
     }
 
     public Step getStep(int index, int phase, int step) {

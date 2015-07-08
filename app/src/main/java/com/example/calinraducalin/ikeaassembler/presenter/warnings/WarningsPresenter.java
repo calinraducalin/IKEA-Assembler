@@ -41,6 +41,9 @@ public class WarningsPresenter extends BasePresenter {
             case IWarningsView.MENU_BACK_ITEMS:
                 this.view.navigateBackToItemsActivity();
                 return true;
+            case IWarningsView.MENU_HIDE_WARNINGS:
+                this.view.hideWarnings();
+                return true;
 
             default:
                 return false;
@@ -49,6 +52,12 @@ public class WarningsPresenter extends BasePresenter {
 
     public List getWarningsForItem(int index) {
         List warnings = ItemsManager.getSharedInstance().getWarningsForItem(index);
+        totalWarnings = warnings.size();
+        return warnings;
+    }
+
+    public List getWarningsForStep(int index, int phase, int step) {
+        List warnings = ItemsManager.getSharedInstance().getWarningsForStep(index, phase, step);
         totalWarnings = warnings.size();
         return warnings;
     }

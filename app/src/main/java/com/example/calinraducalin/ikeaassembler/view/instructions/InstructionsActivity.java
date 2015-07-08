@@ -11,6 +11,7 @@ import com.example.calinraducalin.ikeaassembler.base.BaseCardScrollActivity;
 import com.example.calinraducalin.ikeaassembler.presenter.instructions.InstructionsPresenter;
 import com.example.calinraducalin.ikeaassembler.view.components.ComponentsActivity;
 import com.example.calinraducalin.ikeaassembler.view.start.StartActivity;
+import com.example.calinraducalin.ikeaassembler.view.warnings.WarningsActivity;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class InstructionsActivity extends BaseCardScrollActivity implements IIns
     boolean isLastPhase;
     boolean shouldRepeatPhase;
     boolean canDisplayComponents;
+    boolean canDisplayWarnings;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -39,14 +41,10 @@ public class InstructionsActivity extends BaseCardScrollActivity implements IIns
         phaseIndex = extras.getInt(PHASE_INDEX);
         stepIndex = extras.getInt(STEP_INDEX);
 
-        setContinueValue(1000 * (phaseIndex + 1) + stepIndex);
         isLastPhase = ((InstructionsPresenter) presenter).isLastPhaseForItem(itemIndex, phaseIndex);
-        isLastStep = ((InstructionsPresenter) presenter).isLastStepForPhase(itemIndex, phaseIndex, stepIndex - 1);
         shouldRepeatPhase = ((InstructionsPresenter) presenter).shouldRepeatPhase(itemIndex, phaseIndex);
-        canDisplayComponents = ((InstructionsPresenter) presenter).canDisplayComponents(itemIndex, phaseIndex, stepIndex - 1);
-        if (canDisplayComponents) {
-            showToolsAndComponents();
-        }
+
+        reloadItemFlags();
     }
 
     @Override
@@ -68,6 +66,9 @@ public class InstructionsActivity extends BaseCardScrollActivity implements IIns
         if (canDisplayComponents && (lastSelectedItem < totalSubsteps - 1)) {
             menu.add(0, MENU_SHOW_COMPONENTS, Menu.NONE, R.string.action_show_components).setIcon(R.drawable.ic_arrow_up_50);
         }
+        if (canDisplayWarnings && (lastSelectedItem < totalSubsteps - 1)) {
+            menu.add(0, MENU_SHOW_WARNINGS, Menu.NONE, R.string.action_show_warnings).setIcon(R.drawable.ic_warning_50);
+        }
 
 
         if (isLastPhase && isLastStep) {
@@ -81,7 +82,12 @@ public class InstructionsActivity extends BaseCardScrollActivity implements IIns
             } else {
                 menu.add(0, MENU_NEXT_STEP, Menu.NONE, R.string.action_next_step).setIcon(R.drawable.ic_arrow_right_50);
             }
-            menu.add(0, MENU_SHOW_COMPONENTS, Menu.NONE, R.string.action_show_components).setIcon(R.drawable.ic_arrow_up_50);
+            if (canDisplayComponents) {
+                menu.add(0, MENU_SHOW_COMPONENTS, Menu.NONE, R.string.action_show_components).setIcon(R.drawable.ic_arrow_up_50);
+            }
+            if (canDisplayWarnings) {
+                menu.add(0, MENU_SHOW_WARNINGS, Menu.NONE, R.string.action_show_warnings).setIcon(R.drawable.ic_warning_50);
+            }
         } else {
             if (isLastStep) {
                 if (shouldRepeatPhase) {
@@ -111,22 +117,9 @@ public class InstructionsActivity extends BaseCardScrollActivity implements IIns
     @Override
     public void showNextStep() {
         if (!isLastPhase) {
-            if (isLastStep) {
-                phaseIndex++;
-                stepIndex = 0;
-                setContinueValue(1000 * (phaseIndex + 1));
-                dismissActivity(StartActivity.PHASE_OVERVIEW_ACTIVITY);
-            } else {
-                stepIndex++;
-//                isLastPhase = ((InstructionsPresenter) presenter).isLastPhaseForItem(itemIndex, phaseIndex);
-                isLastStep = ((InstructionsPresenter) presenter).isLastStepForPhase(itemIndex, phaseIndex, stepIndex - 1);
-                canDisplayComponents = ((InstructionsPresenter) presenter).canDisplayComponents(itemIndex, phaseIndex, stepIndex - 1);
-                setContinueValue(1000 * (phaseIndex + 1) + stepIndex);
-                if (canDisplayComponents) {
-                    showToolsAndComponents();
-                }
-                setupCardsList();
-            }
+            stepIndex++;
+            reloadItemFlags();
+            setupCardsList();
         }
     }
 
@@ -147,38 +140,51 @@ public class InstructionsActivity extends BaseCardScrollActivity implements IIns
     @Override
     public void showPreviousStep() {
         stepIndex--;
-        isLastStep = ((InstructionsPresenter) presenter).isLastStepForPhase(itemIndex, phaseIndex, stepIndex - 1);
-        canDisplayComponents = ((InstructionsPresenter) presenter).canDisplayComponents(itemIndex, phaseIndex, stepIndex - 1);
-        setContinueValue(1000 * (phaseIndex + 1) + stepIndex);
-        if (canDisplayComponents) {
-            showToolsAndComponents();
-        }
+        reloadItemFlags();
         setupCardsList();
     }
 
     @Override
     public void repeatThisPhase() {
         stepIndex = 1;
-        isLastStep = ((InstructionsPresenter) presenter).isLastStepForPhase(itemIndex, phaseIndex, stepIndex - 1);
-        canDisplayComponents = ((InstructionsPresenter) presenter).canDisplayComponents(itemIndex, phaseIndex, stepIndex - 1);
-        setContinueValue(1000 * (phaseIndex + 1) + stepIndex);
-        if (canDisplayComponents) {
-            showToolsAndComponents();
-        }
+        reloadItemFlags();
         setupCardsList();
     }
 
     @Override
     public void showToolsAndComponents() {
         Intent componentsIntent = new Intent(InstructionsActivity.this, ComponentsActivity.class);
-        componentsIntent.putExtra(ITEM_INDEX, itemIndex);
-        componentsIntent.putExtra(ITEM_CODE, itemCode);
-        componentsIntent.putExtra(ComponentsActivity.FOR_STEP, true);
-        componentsIntent.putExtra(PHASE_INDEX, phaseIndex);
-        componentsIntent.putExtra(STEP_INDEX, stepIndex - 1);
-
-        startActivity(componentsIntent);
+        prepareAndStartActivity(componentsIntent);
     }
 
+    @Override
+    public void showWarningsForStep() {
+        Intent warningsIntent = new Intent(InstructionsActivity.this, WarningsActivity.class);
+        prepareAndStartActivity(warningsIntent);
+    }
+
+    private void reloadItemFlags() {
+        isLastStep = ((InstructionsPresenter) presenter).isLastStepForPhase(itemIndex, phaseIndex, stepIndex - 1);
+        canDisplayComponents = ((InstructionsPresenter) presenter).canDisplayComponents(itemIndex, phaseIndex, stepIndex - 1);
+        canDisplayWarnings = ((InstructionsPresenter) presenter).areWarningsToDisplay(itemIndex, phaseIndex, stepIndex - 1);
+        setContinueValue(1000 * (phaseIndex + 1) + stepIndex);
+
+        if (canDisplayWarnings) {
+            showWarningsForStep();
+        }
+        if (canDisplayComponents) {
+            showToolsAndComponents();
+        }
+    }
+
+    private void prepareAndStartActivity(Intent intent) {
+        intent.putExtra(ITEM_INDEX, itemIndex);
+        intent.putExtra(ITEM_CODE, itemCode);
+        intent.putExtra(ComponentsActivity.FOR_STEP, true);
+        intent.putExtra(PHASE_INDEX, phaseIndex);
+        intent.putExtra(STEP_INDEX, stepIndex - 1);
+
+        startActivity(intent);
+    }
 
 }

@@ -35,6 +35,8 @@
     <string name="action_begin_assembly">Begin assembling</string>
     <string name="action_hide_components">Hide components</string>
     <string name="action_show_components">Show components</string>
+    <string name="action_hide_warnings">Hide warnings</string>
+    <string name="action_show_warnings">Show warnings</string>
     <string name="hemnes">HEMNES Daybed</string>
     <string name="success">Success!</string>
     <string name="searching_item">Searching Item...</string>

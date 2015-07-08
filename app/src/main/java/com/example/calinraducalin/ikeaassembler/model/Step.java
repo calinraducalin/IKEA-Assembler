@@ -53,4 +53,8 @@ public class Step implements Serializable{
 
         return toolAndComponents;
     }
+
+    public ArrayList<Warning> getWarnings() {
+        return warnings;
+    }
 }

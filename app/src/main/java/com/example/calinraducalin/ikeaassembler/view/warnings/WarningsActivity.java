@@ -45,7 +45,12 @@ public class WarningsActivity extends BaseCardScrollActivity implements IWarning
 
     @Override
     protected void setupCardsList() {
-        List<Object> warnings = ((WarningsPresenter) presenter).getWarningsForItem(itemIndex);
+        List warnings;
+        if (forStep) {
+            warnings = ((WarningsPresenter) presenter).getWarningsForStep(itemIndex, phaseIndex, stepIndex);
+        } else {
+            warnings = ((WarningsPresenter) presenter).getWarningsForItem(itemIndex);
+        }
         totalWarnings = warnings.size();
 
         cardScrollerView.setAdapter(new WarningsCardScrollAdapter(context, itemCode, warnings));
@@ -57,7 +62,7 @@ public class WarningsActivity extends BaseCardScrollActivity implements IWarning
         super.setupMenu(featureId, menu);
 
         if (forStep) {
-
+            menu.add(0, MENU_HIDE_WARNINGS, Menu.NONE, R.string.action_hide_warnings).setIcon(R.drawable.ic_arrow_down_50);
         } else {
             if (lastSelectedItem == totalWarnings - 1) {
                 menu.add(0, MENU_COMPONENTS, Menu.NONE, R.string.action_components).setIcon(R.drawable.ic_arrow_right_50);
@@ -86,5 +91,10 @@ public class WarningsActivity extends BaseCardScrollActivity implements IWarning
     @Override
     public void navigateBackToItemsActivity() {
         dismissActivity(StartActivity.ITEMS_ACTIVITY);
+    }
+
+    @Override
+    public void hideWarnings() {
+        finish();
     }
 }

@@ -1,16 +1,13 @@
 package com.example.calinraducalin.ikeaassembler.presenter.start;
 
-import android.util.Log;
-
 import com.example.calinraducalin.ikeaassembler.base.BasePresenter;
-import com.example.calinraducalin.ikeaassembler.view.start.IStartView;
-import com.example.calinraducalin.ikeaassembler.utlis.AlertDialogActivity;
 import com.example.calinraducalin.ikeaassembler.utlis.ItemsManager;
+import com.example.calinraducalin.ikeaassembler.view.start.IStartView;
 
 /**
  * Created by calinraducalin on 17/06/15.
  */
-public class StartPresenter extends BasePresenter implements IStartPresenter {
+public class StartPresenter extends BasePresenter {
 
     private IStartView view;
     private int continueValue;
@@ -55,14 +52,14 @@ public class StartPresenter extends BasePresenter implements IStartPresenter {
         return itemCode;
     }
 
+    public int getPhasesCount() {
+        return ItemsManager.getSharedInstance().getPhasesCount(itemIndex);
+    }
+
+
     public int getItemIndex() {
         return itemIndex;
     }
-
-    public void setItemsManagerDelegate() {
-        ItemsManager.getSharedInstance().setStartDelegate(this);
-    }
-
 
     public String isItemDownloaded(Integer code) {
         return ItemsManager.getSharedInstance().isItemDownloaded(code);
@@ -70,32 +67,6 @@ public class StartPresenter extends BasePresenter implements IStartPresenter {
 
     public int getItemsNumber() {
         return ItemsManager.getSharedInstance().getItemsCount();
-    }
-
-    @Override
-    public void itemsSuccesfullyLoad() {
-        Log.d("START PRESENTER", "load from local data store");
-        this.view.itemsReady();
-    }
-
-    @Override
-    public void showLoadingActivity() {
-        this.view.showLoadingActivity(null);
-    }
-
-    @Override
-    public void noNetworkError() {
-        this.view.showAlertDialogForType(AlertDialogActivity.ALERT_TYPE_NO_NETWORK);
-    }
-
-    @Override
-    public void unKnownError() {
-        this.view.showAlertDialogForType(AlertDialogActivity.ALERT_TYPE_DEFAULT);
-    }
-
-    @Override
-    public void itemNotFoundError() {
-        this.view.showAlertDialogForType(AlertDialogActivity.ALERT_TYPE_ITEM_NOT_FOUND);
     }
 
     @Override
@@ -113,9 +84,13 @@ public class StartPresenter extends BasePresenter implements IStartPresenter {
                 break;
 
             default:
-                int phase = (continueValue / 1000) - 1;
-                if (phase > -1) {
-                    this.view.navigateToInstructionsActivity();
+                if (continueValue % 1000 == 0) {
+                    this.view.navigateToPhaseOverviewActivity();
+                } else {
+                    int phase = (continueValue / 1000) - 1;
+                    if (phase > -1) {
+                        this.view.navigateToInstructionsActivity();
+                    }
                 }
                 break;
         }

@@ -19,12 +19,13 @@ import com.example.calinraducalin.ikeaassembler.view.components.ComponentsActivi
 import com.example.calinraducalin.ikeaassembler.view.download.DownloadActivity;
 import com.example.calinraducalin.ikeaassembler.view.instructions.InstructionsActivity;
 import com.example.calinraducalin.ikeaassembler.view.items.ItemsActivity;
+import com.example.calinraducalin.ikeaassembler.view.phaseOverview.PhaseOverviewActivity;
 import com.example.calinraducalin.ikeaassembler.view.warnings.WarningsActivity;
 import com.google.android.glass.view.WindowUtils;
 
 
 public class StartActivity extends BaseActivity implements IStartView {
-
+    public static final String TOTAL_PHASES = "totalPhases";
     private static final int QR_CODE_MODE = 100;
     private static final int LOADING_ACTIVITY = 101;
     private static final int ITEMS_ACTIVITY = 102;
@@ -32,6 +33,7 @@ public class StartActivity extends BaseActivity implements IStartView {
     public static final int WARNINGS_ACTIVITY = 104;
     public static final int COMPONENTS_ACTIVITY = 105;
     public static final int INSTRUCTIONS_ACTIVITY = 106;
+    public static final int PHASE_OVERVIEW_ACTIVITY = 107;
 
     private static final String MESSAGE = "message";
     private static final String SCAN_RESULT = "SCAN_RESULT";
@@ -44,7 +46,6 @@ public class StartActivity extends BaseActivity implements IStartView {
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         presenter = new StartPresenter(this);
-        ((StartPresenter) presenter).setItemsManagerDelegate();
         buildView();
     }
 
@@ -122,6 +123,8 @@ public class StartActivity extends BaseActivity implements IStartView {
             navigateToWarningsActivity();
         } else if (resultCode == COMPONENTS_ACTIVITY) {
             navigateToComponentsActivity();
+        } else if (resultCode == PHASE_OVERVIEW_ACTIVITY) {
+            navigateToPhaseOverviewActivity();
         } else if (resultCode == INSTRUCTIONS_ACTIVITY) {
             navigateToInstructionsActivity();
         } else {
@@ -192,10 +195,6 @@ public class StartActivity extends BaseActivity implements IStartView {
         Toast.makeText(context, "Items Ready", Toast.LENGTH_LONG).show();
     }
 
-    private void buildView() {
-        setContentView(R.layout.activity_main);
-    }
-
     @Override
     public void navigateToWarningsActivity() {
         Intent warningsIntent = new Intent(StartActivity.this, WarningsActivity.class);
@@ -229,6 +228,20 @@ public class StartActivity extends BaseActivity implements IStartView {
     }
 
     @Override
+    public void navigateToPhaseOverviewActivity() {
+        Log.d("START ACTIVITY", "Navigate to Phase Overview Activity");
+        Intent phaseIntent = new Intent(StartActivity.this, PhaseOverviewActivity.class);
+        reloadContinueData();
+        int phaseIndex = (continueValue / 1000) - 1;
+        phaseIntent.putExtra(ITEM_INDEX, ((StartPresenter) presenter).getItemIndex());
+        phaseIntent.putExtra(ITEM_CODE, ((StartPresenter) presenter).getItemCode());
+        phaseIntent.putExtra(PHASE_INDEX, phaseIndex);
+        phaseIntent.putExtra(TOTAL_PHASES, ((StartPresenter) presenter).getPhasesCount());
+
+        startActivityForResult(phaseIntent, PHASE_OVERVIEW_ACTIVITY);
+    }
+
+    @Override
     public void dismissView() {}
 
     @Override
@@ -236,6 +249,10 @@ public class StartActivity extends BaseActivity implements IStartView {
 
     @Override
     public void previousCommand() {}
+
+    private void buildView() {
+        setContentView(R.layout.activity_main);
+    }
 
     private void navigateToDownloadActivity(Integer code) {
         Intent objIntent = new Intent(StartActivity.this, DownloadActivity.class);

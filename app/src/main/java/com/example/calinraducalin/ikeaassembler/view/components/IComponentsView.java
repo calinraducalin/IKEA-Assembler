@@ -8,6 +8,8 @@ import com.example.calinraducalin.ikeaassembler.base.IBaseView;
 public interface IComponentsView extends IBaseView {
     int MENU_SKIP_COMPONENTS = 3;
     int MENU_BEGIN_ASSAMBLING = 4;
+    int MENU_HIDE_COMPONENTS = 5;
 
     void navigateToInstructionsActivity();
+    void hideComponents();
 }

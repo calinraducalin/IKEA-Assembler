@@ -47,7 +47,7 @@ public class WarningsActivity extends BaseCardScrollActivity implements IWarning
 
         //default menu options
         if (lastSelectedItem == totalWarnings - 1) {
-            menu.add(0, MENU_COMPONENTS, Menu.NONE, R.string.action_components).setIcon(R.drawable.ic_share_50);
+            menu.add(0, MENU_COMPONENTS, Menu.NONE, R.string.action_components).setIcon(R.drawable.ic_arrow_right_50);
         } else {
             menu.add(0, MENU_SKIP, Menu.NONE, R.string.action_skip_warnings).setIcon(R.drawable.ic_share_50);
         }
@@ -60,7 +60,6 @@ public class WarningsActivity extends BaseCardScrollActivity implements IWarning
             super.onItemSelected(adapterView, view, i, l);
             Warning warning = ((Warning)adapterView.getItemAtPosition(i));
             audioHelpManager.speakTheText(warning.getText());
-//            ((ItemsPresenter) presenter).setCurrentItem(i);
         }
     }
 

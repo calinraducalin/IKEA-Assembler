@@ -25,5 +25,5 @@ public interface IStartView extends IBaseView {
     void navigateToWarningsActivity();
     void navigateToComponentsActivity();
     void navigateToInstructionsActivity();
-
+    void navigateToPhaseOverviewActivity();
 }

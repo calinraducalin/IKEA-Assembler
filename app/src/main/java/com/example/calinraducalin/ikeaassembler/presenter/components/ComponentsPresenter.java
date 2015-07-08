@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by calinraducalin on 02/07/15.
  */
-public class ComponentsPresenter extends BasePresenter implements IComponentsPresenter {
+public class ComponentsPresenter extends BasePresenter {
     private IComponentsView view;
     private int totalComponents = 0;
 
@@ -37,6 +37,9 @@ public class ComponentsPresenter extends BasePresenter implements IComponentsPre
             case IComponentsView.MENU_BEGIN_ASSAMBLING:
                 this.view.navigateToInstructionsActivity();
                 return true;
+            case IComponentsView.MENU_HIDE_COMPONENTS:
+                this.view.hideComponents();
+                return true;
 
             default:
                 return false;
@@ -44,7 +47,13 @@ public class ComponentsPresenter extends BasePresenter implements IComponentsPre
     }
 
     public List getComponentsForItem(int index) {
-        List components = ItemsManager.getSharedInstance().getComponentsForItem(index);
+        List components = ItemsManager.getSharedInstance().getToolsAndComponentsForItem(index);
+        totalComponents = components.size();
+        return components;
+    }
+
+    public List getComponentsForStep(int index, int phase, int step) {
+        List components = ItemsManager.getSharedInstance().getToolsAndComponentsForStep(index, phase, step);
         totalComponents = components.size();
         return components;
     }

@@ -2,10 +2,10 @@ package com.example.calinraducalin.ikeaassembler.utlis;
 
 import android.os.Environment;
 
+import com.example.calinraducalin.ikeaassembler.model.AssemblyPhase;
 import com.example.calinraducalin.ikeaassembler.model.Item;
 import com.example.calinraducalin.ikeaassembler.model.Step;
 import com.example.calinraducalin.ikeaassembler.presenter.items.IItemsPresenter;
-import com.example.calinraducalin.ikeaassembler.presenter.start.IStartPresenter;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,9 +21,7 @@ public class ItemsManager {
 
     private static ItemsManager sharedInstance;
     private ArrayList<Object> items;
-    private IStartPresenter startDelegate;
     private IItemsPresenter itemsDelegate;
-//    private ItemsService itemsService;
 
     public ItemsManager(){
         super();
@@ -38,24 +36,9 @@ public class ItemsManager {
         return sharedInstance;
     }
 
-    public void setStartDelegate(IStartPresenter startDelegate) {
-        this.startDelegate = startDelegate;
-    }
-
     public void setItemsDelegate(IItemsPresenter itemsDelegate) {
         this.itemsDelegate = itemsDelegate;
     }
-
-//    public ItemsService getNewItemWithCode(Integer code) {
-//        String itemName = isItemDownloaded(code);
-//        if (itemName != null) {
-//            startDelegate.itemExists(itemName);
-//            return null;
-//        }
-//
-//        return this.getItemFromServer(code);
-//
-//    }
 
     public void addItem(Item item) {
         if (this.items == null) {
@@ -94,23 +77,21 @@ public class ItemsManager {
     public List<Object> getWarningsForItem(int index) {
         return ((Item) this.items.get(index)).getWarnings();
     }
-    public List<Object> getComponentsForItem(int index) {
-        return ((Item) this.items.get(index)).getComponents();
+    public List<Object> getToolsAndComponentsForItem(int index) {
+        return ((Item) this.items.get(index)).getToolsAndComponents();
     }
+
+    public List getToolsAndComponentsForStep(int index, int phase, int step) {
+        return this.getStep(index, phase, step).getToolsAndComponents();
+    }
+
     public Step getStep(int index, int phase, int step) {
         return ((Item) this.items.get(index)).getStep(phase, step);
     }
 
-
-//    @Override
-//    public void succesfullyLoadItem(Item item) {
-//        this.items.add(0, item);
-//        this.startDelegate.itemsSuccesfullyLoad();
-//
-//        Log.d("Items ready", "Number of items loaded: " + items.size());
-//        saveItems();
-//        itemsService = null;
-//    }
+    public AssemblyPhase getPhaseForItem(int index, int phase) {
+        return ((Item) this.items.get(index)).getAssamblyPhase(index);
+    }
 
     public void deleteItemFromLocalDataStore(int index) {
         Item item = ((Item) items.remove(index));
@@ -126,21 +107,6 @@ public class ItemsManager {
         }
     }
 
-//    @Override
-//    public void itemNotFound() {
-//        startDelegate.itemNotFoundError();
-//    }
-//
-//    @Override
-//    public void networkError() {
-//        startDelegate.noNetworkError();
-//    }
-//
-//    @Override
-//    public void unknownError() {
-//        startDelegate.unKnownError();
-//    }
-
     public String isItemDownloaded(Integer code) {
         if (items != null) {
             for (Object item : items) {
@@ -152,13 +118,17 @@ public class ItemsManager {
         return null;
     }
 
-//    private ItemsService getItemFromServer(Integer code) {
-//        itemsService = new ItemsService(this);
-//        itemsService.getItemByID(code);
-//        startDelegate.showLoadingActivity();
-//
-//        return itemsService;
-//    }
+    public boolean isLastStep(int index, int phase, int step) {
+        return ((AssemblyPhase) ((Item) this.items.get(index)).getAssamblyPhase(phase)).isLastStep(step);
+    }
+
+    public boolean isLastPhase(int index, int phase) {
+        return  ((Item) this.items.get(index)).isLastPhase(phase);
+    }
+
+    public int getPhasesCount(int index) {
+        return  ((Item) this.items.get(index)).getPhasesCount();
+    }
 
     private void saveItems() {
         try {

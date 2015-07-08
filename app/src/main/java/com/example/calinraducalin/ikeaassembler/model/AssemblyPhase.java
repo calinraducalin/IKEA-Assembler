@@ -19,6 +19,10 @@ public class AssemblyPhase implements Serializable{
         this.name = name;
     }
 
+    public int getStepsCount() {
+        return this.steps.size();
+    }
+
     public int getRepeat() {
         return repeat;
     }
@@ -46,5 +50,9 @@ public class AssemblyPhase implements Serializable{
             }
         }
         return null;
+    }
+
+    public boolean isLastStep(int stepIndex) {
+        return this.steps.size() == stepIndex + 1;
     }
 }

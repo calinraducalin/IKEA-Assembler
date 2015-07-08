@@ -16,23 +16,39 @@ import java.util.List;
  * Created by calinraducalin on 02/07/15.
  */
 public class ComponentsActivity extends BaseCardScrollActivity implements IComponentsView {
+    public static final String FOR_STEP = "forStep";
     private int totalComponents;
+    private boolean forStep;
+    private int phaseIndex;
+    private int stepIndex;
 
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        setContinueValue(2);
-
         presenter = new ComponentsPresenter(this);
 
-        itemIndex = getIntent().getExtras().getInt(ITEM_INDEX);
-        itemCode = getIntent().getExtras().getInt(ITEM_CODE);
+        Bundle extras = getIntent().getExtras();
+        itemIndex = extras.getInt(ITEM_INDEX);
+        itemCode = extras.getInt(ITEM_CODE);
+
+        forStep = extras.getBoolean(FOR_STEP, false);
+        if (forStep) {
+            phaseIndex = extras.getInt(PHASE_INDEX);
+            stepIndex = extras.getInt(STEP_INDEX);
+        } else {
+            setContinueValue(2);
+        }
 
     }
 
     @Override
     protected void setupCardsList() {
-        List<Object> components = ((ComponentsPresenter) presenter).getComponentsForItem(itemIndex);
+        List components;
+        if (forStep) {
+            components = ((ComponentsPresenter) presenter).getComponentsForStep(itemIndex, phaseIndex, stepIndex);
+        } else {
+            components = ((ComponentsPresenter) presenter).getComponentsForItem(itemIndex);
+        }
         totalComponents = components.size();
 
         cardScrollerView.setAdapter(new ComponentsCardScrollAdapter(context, itemCode, components));
@@ -43,9 +59,10 @@ public class ComponentsActivity extends BaseCardScrollActivity implements ICompo
     protected void setupMenu(int featureId, Menu menu) {
         super.setupMenu(featureId, menu);
 
-        //default menu options
-        if (lastSelectedItem == totalComponents - 1) {
-            menu.add(0, MENU_BEGIN_ASSAMBLING, Menu.NONE, R.string.action_begin_assembly).setIcon(R.drawable.ic_share_50);
+        if (forStep) {
+            menu.add(0, MENU_HIDE_COMPONENTS, Menu.NONE, R.string.action_hide_components).setIcon(R.drawable.ic_arrow_down_50);
+        } else if (lastSelectedItem == totalComponents - 1) {
+            menu.add(0, MENU_BEGIN_ASSAMBLING, Menu.NONE, R.string.action_begin_assembly).setIcon(R.drawable.ic_arrow_right_50);
         } else {
             menu.add(0, MENU_SKIP_COMPONENTS, Menu.NONE, R.string.action_skip_components).setIcon(R.drawable.ic_share_50);
         }
@@ -62,6 +79,15 @@ public class ComponentsActivity extends BaseCardScrollActivity implements ICompo
     @Override
     public void navigateToInstructionsActivity() {
         setContinueValue(1000); //1000 (first phase) + 0 (first step)
-        dismissActivity(StartActivity.INSTRUCTIONS_ACTIVITY);
+        dismissActivity(StartActivity.PHASE_OVERVIEW_ACTIVITY);
+    }
+
+    @Override
+    public void hideComponents() {
+        finish();
+    }
+
+    public boolean isForStep() {
+        return forStep;
     }
 }

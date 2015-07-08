@@ -43,4 +43,14 @@ public class Step implements Serializable{
     public Integer getNumber() {
         return number;
     }
+
+    public List getToolsAndComponents(){
+        List toolAndComponents = new ArrayList();
+        if (tool != null) {
+            toolAndComponents.add(tool);
+        }
+        toolAndComponents.addAll(this.components);
+
+        return toolAndComponents;
+    }
 }

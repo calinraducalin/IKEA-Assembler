@@ -5,5 +5,13 @@ import com.example.calinraducalin.ikeaassembler.base.IBaseView;
 /**
  * Created by calinraducalin on 06/07/15.
  */
-public interface IInstructionsView extends IBaseView{
+public interface IInstructionsView extends IBaseView {
+    int MENU_SKIP_STEP = 3;
+    int MENU_NEXT_STEP = 4;
+    int MENU_PREVIOUS_STEP = 5;
+    int MENU_SHOW_COMPONENTS = 6;
+
+    void showNextStep();
+    void showPreviousStep();
+    void showToolsAndComponents();
 }

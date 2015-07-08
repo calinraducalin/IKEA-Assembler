@@ -1,7 +1,5 @@
 package com.example.calinraducalin.ikeaassembler.presenter.instructions;
 
-import android.util.Log;
-
 import com.example.calinraducalin.ikeaassembler.base.BasePresenter;
 import com.example.calinraducalin.ikeaassembler.model.Step;
 import com.example.calinraducalin.ikeaassembler.utlis.ItemsManager;
@@ -23,14 +21,23 @@ public class InstructionsPresenter extends BasePresenter {
     }
 
     public boolean handleOption(int option) {
-
         if (super.handleOption(option)) {
-            Log.d("TRUE??", "option " + option );
             return true;
         }
 
         switch (option) {
-
+            case IInstructionsView.MENU_SKIP_STEP:
+                this.view.showNextStep();
+                return true;
+            case IInstructionsView.MENU_NEXT_STEP:
+                this.view.showNextStep();
+                return true;
+            case IInstructionsView.MENU_PREVIOUS_STEP:
+                this.view.showPreviousStep();
+                return true;
+            case IInstructionsView.MENU_SHOW_COMPONENTS:
+                this.view.showToolsAndComponents();
+                return true;
 
             default:
                 return false;
@@ -48,4 +55,17 @@ public class InstructionsPresenter extends BasePresenter {
     public int getItemsCount() {
         return totalSteps;
     }
+
+    public boolean isLastStepForPhase(int index, int phase, int step) {
+        return ItemsManager.getSharedInstance().isLastStep(index, phase, step);
+    }
+
+    public boolean isLastPhaseForItem(int index, int phase) {
+        return ItemsManager.getSharedInstance().isLastPhase(index, phase);
+    }
+
+    public boolean canDisplayComponents(int index, int phase, int step) {
+        return ItemsManager.getSharedInstance().getToolsAndComponentsForStep(index, phase, step).size() > 0;
+    }
+
 }

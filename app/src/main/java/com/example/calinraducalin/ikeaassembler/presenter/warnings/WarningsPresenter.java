@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by calinraducalin on 17/06/15.
  */
-public class WarningsPresenter extends BasePresenter implements IWarningsPresenter {
+public class WarningsPresenter extends BasePresenter {
     private IWarningsView view;
     private int totalWarnings = 0;
 

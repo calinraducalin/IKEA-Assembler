@@ -47,8 +47,11 @@ public class Item implements Serializable {
         return this.warnings;
     }
 
-    public List<Object> getComponents() {
-        return this.components;
+    public List<Object> getToolsAndComponents() {
+        List toolsAndComponents = new ArrayList(tools);
+        toolsAndComponents.addAll(this.components);
+
+        return toolsAndComponents;
     }
 
     public Step getStep(int phase, int step) {
@@ -109,5 +112,12 @@ public class Item implements Serializable {
         return null;
     }
 
+    public boolean isLastPhase(int phase) {
+        return this.phases.size() == phase + 1;
+    }
+
+    public int getPhasesCount() {
+        return this.phases.size();
+    }
 
 }

@@ -2,7 +2,7 @@ package com.example.calinraducalin.ikeaassembler.presenter.instructions;
 
 import com.example.calinraducalin.ikeaassembler.base.BasePresenter;
 import com.example.calinraducalin.ikeaassembler.model.Step;
-import com.example.calinraducalin.ikeaassembler.utlis.ItemsManager;
+import com.example.calinraducalin.ikeaassembler.utils.ItemsManager;
 import com.example.calinraducalin.ikeaassembler.view.instructions.IInstructionsView;
 
 import java.util.List;

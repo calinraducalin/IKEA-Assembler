@@ -3,7 +3,7 @@ package com.example.calinraducalin.ikeaassembler.presenter.items;
 import android.util.Log;
 
 import com.example.calinraducalin.ikeaassembler.base.BasePresenter;
-import com.example.calinraducalin.ikeaassembler.utlis.ItemsManager;
+import com.example.calinraducalin.ikeaassembler.utils.ItemsManager;
 import com.example.calinraducalin.ikeaassembler.view.items.IItemsView;
 
 import java.util.List;
@@ -45,6 +45,9 @@ public class ItemsPresenter extends BasePresenter implements IItemsPresenter {
                 return true;
             case IItemsView.MENU_CONTINUE:
                 this.view.continueThisItem();
+                return true;
+            case IItemsView.MENU_PHASES:
+                this.view.navigateToItemPhases();
                 return true;
 
             default:

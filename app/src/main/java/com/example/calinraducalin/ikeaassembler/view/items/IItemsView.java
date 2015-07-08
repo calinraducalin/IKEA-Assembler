@@ -9,10 +9,13 @@ public interface IItemsView extends IBaseView{
     int MENU_START_BEGINNING = 3;
     int MENU_DELETE = 4;
     int MENU_CONTINUE = 5;
+    int MENU_PHASES = 6;
+
 
     void itemSuccesfullyDeleted(boolean moreItems, int itemCode);
     void itemDeletionError();
     void showDeleteGrace();
     void startInstructions();
     void continueThisItem();
+    void navigateToItemPhases();
 }

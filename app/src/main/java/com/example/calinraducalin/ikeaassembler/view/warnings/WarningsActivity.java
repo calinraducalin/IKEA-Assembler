@@ -97,4 +97,8 @@ public class WarningsActivity extends BaseCardScrollActivity implements IWarning
     public void hideWarnings() {
         finish();
     }
+
+    public boolean isForStep() {
+        return forStep;
+    }
 }

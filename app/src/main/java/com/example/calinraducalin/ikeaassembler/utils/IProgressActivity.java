@@ -1,4 +1,4 @@
-package com.example.calinraducalin.ikeaassembler.utlis;
+package com.example.calinraducalin.ikeaassembler.utils;
 
 /**
  * Created by calinraducalin on 01/07/15.

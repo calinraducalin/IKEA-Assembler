@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 
 import com.example.calinraducalin.ikeaassembler.R;
 import com.example.calinraducalin.ikeaassembler.view.components.ComponentsActivity;
+import com.example.calinraducalin.ikeaassembler.view.warnings.WarningsActivity;
 import com.google.android.glass.view.WindowUtils;
 import com.google.android.glass.widget.CardScrollView;
 
@@ -41,11 +42,13 @@ public abstract class BaseCardScrollActivity extends BaseActivity implements IBa
 
         if (featureId == WindowUtils.FEATURE_VOICE_COMMANDS) {
             //only for voice menu
-            if (!(this instanceof ComponentsActivity) || !((ComponentsActivity) this).isForStep()) {
+            if ((!(this instanceof ComponentsActivity) || !((ComponentsActivity) this).isForStep()) &&
+                    (!(this instanceof WarningsActivity) || !((WarningsActivity) this).isForStep())) {
+                //if it is not ComponentsForStep  OR  WarningsForStep
                 menu.add(0, MENU_BACK, Menu.NONE, R.string.action_back).setIcon(R.drawable.ic_arrow_left_50);
             }
 
-            int itemsCount = ((BasePresenter) presenter).getItemsCount();
+            int itemsCount = presenter.getItemsCount();
             if (itemsCount > 1) {
                 if (lastSelectedItem < itemsCount - 1) {
                     menu.add(0, MENU_NEXT, Menu.NONE, R.string.action_next).setIcon(R.drawable.ic_arrow_right_50);

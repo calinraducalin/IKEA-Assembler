@@ -74,7 +74,7 @@ public class PhaseOverviewActivity extends BaseActivity implements IPhaseOvervie
 
     @Override
     public void navigateToFirstStep() {
-        setContinueValue(1000 * (phaseIndex + 1) + 1);
+        setContinueValue(PHASE_MULTIPLIER * (phaseIndex + 1) + 1);
         dismissActivity(StartActivity.INSTRUCTIONS_ACTIVITY);
     }
 
@@ -85,25 +85,25 @@ public class PhaseOverviewActivity extends BaseActivity implements IPhaseOvervie
 
     @Override
     public void navigateToPreviousStep() {
-        setContinueValue(1000 * (phaseIndex) + lastPhaseStepsCount);
+        setContinueValue(PHASE_MULTIPLIER * (phaseIndex) + lastPhaseStepsCount);
         dismissActivity(StartActivity.INSTRUCTIONS_ACTIVITY);
     }
 
     @Override
     public void navigateToNextPhase() {
-        setContinueValue(1000 * (phaseIndex + 2));
+        setContinueValue(PHASE_MULTIPLIER * (phaseIndex + 2));
         dismissActivity(StartActivity.PHASE_OVERVIEW_ACTIVITY);
     }
 
     @Override
     public void navigateToPreviousPhase() {
-        setContinueValue(1000 * (phaseIndex));
+        setContinueValue(PHASE_MULTIPLIER * (phaseIndex));
         dismissActivity(StartActivity.PHASE_OVERVIEW_ACTIVITY);
     }
 
     @Override
     public void navigateToComponents() {
-        setContinueValue(2);
+        setContinueValue(COMPONENTS_ID);
         dismissActivity(StartActivity.COMPONENTS_ACTIVITY);
     }
 

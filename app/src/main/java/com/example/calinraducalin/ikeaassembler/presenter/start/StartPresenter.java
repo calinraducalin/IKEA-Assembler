@@ -1,7 +1,8 @@
 package com.example.calinraducalin.ikeaassembler.presenter.start;
 
+import com.example.calinraducalin.ikeaassembler.base.BaseActivity;
 import com.example.calinraducalin.ikeaassembler.base.BasePresenter;
-import com.example.calinraducalin.ikeaassembler.utlis.ItemsManager;
+import com.example.calinraducalin.ikeaassembler.utils.ItemsManager;
 import com.example.calinraducalin.ikeaassembler.view.start.IStartView;
 
 /**
@@ -83,18 +84,18 @@ public class StartPresenter extends BasePresenter {
 
     public void handleContinue(){
         switch (continueValue) {
-            case 1:
+            case BaseActivity.WARNINGS_ID:
                 this.view.navigateToWarningsActivity();
                 break;
-            case 2:
+            case BaseActivity.COMPONENTS_ID:
                 this.view.navigateToComponentsActivity();
                 break;
 
             default:
-                if (continueValue % 1000 == 0) {
+                if (continueValue % BaseActivity.WARNINGS_ID == 0) {
                     this.view.navigateToPhaseOverviewActivity();
                 } else {
-                    int phase = (continueValue / 1000) - 1;
+                    int phase = (continueValue / BaseActivity.WARNINGS_ID) - 1;
                     if (phase > -1) {
                         this.view.navigateToInstructionsActivity();
                     }

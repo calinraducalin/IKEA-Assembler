@@ -8,16 +8,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.calinraducalin.ikeaassembler.R;
 import com.example.calinraducalin.ikeaassembler.base.BaseActivity;
 import com.example.calinraducalin.ikeaassembler.presenter.start.StartPresenter;
-import com.example.calinraducalin.ikeaassembler.utlis.AlertDialogActivity;
-import com.example.calinraducalin.ikeaassembler.utlis.ProgressActivity;
+import com.example.calinraducalin.ikeaassembler.utils.AlertDialogActivity;
 import com.example.calinraducalin.ikeaassembler.view.components.ComponentsActivity;
 import com.example.calinraducalin.ikeaassembler.view.download.DownloadActivity;
 import com.example.calinraducalin.ikeaassembler.view.instructions.InstructionsActivity;
+import com.example.calinraducalin.ikeaassembler.view.itemPhases.ItemPhasesActivity;
 import com.example.calinraducalin.ikeaassembler.view.items.ItemsActivity;
 import com.example.calinraducalin.ikeaassembler.view.phaseOverview.PhaseOverviewActivity;
 import com.example.calinraducalin.ikeaassembler.view.warnings.WarningsActivity;
@@ -35,12 +34,11 @@ public class StartActivity extends BaseActivity implements IStartView {
     public static final int INSTRUCTIONS_ACTIVITY = 106;
     public static final int PHASE_OVERVIEW_ACTIVITY = 107;
     public static final int CONTINUE_ACTIVITY = 108;
+    public static final int ITEM_PHASES = 109;
 
     private static final String MESSAGE = "message";
     private static final String SCAN_RESULT = "SCAN_RESULT";
 
-
-    private Intent loadingIntent;
     private int continueValue;
 
     @Override
@@ -132,6 +130,8 @@ public class StartActivity extends BaseActivity implements IStartView {
             navigateToItemsActivity();
         } else if (resultCode == CONTINUE_ACTIVITY) {
             ((StartPresenter) this.presenter).handleContinue();
+        } else if (resultCode == ITEM_PHASES) {
+            navigateToItemPhasesActivity();
         }else {
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -173,17 +173,6 @@ public class StartActivity extends BaseActivity implements IStartView {
     }
 
     @Override
-    public void showLoadingActivity(String message) {
-        if (message == null) {
-            message = getString(R.string.searching_item);
-        }
-
-        loadingIntent = new Intent(StartActivity.this, ProgressActivity.class);
-        loadingIntent.putExtra(MESSAGE, message);
-        startActivityForResult(loadingIntent, LOADING_ACTIVITY);
-    }
-
-    @Override
     public void showAlertDialogForType(int type) {
         dismissLoadingActivity();
         Intent alertIntent = new Intent(StartActivity.this, AlertDialogActivity.class);
@@ -194,12 +183,6 @@ public class StartActivity extends BaseActivity implements IStartView {
     @Override
     public void dismissLoadingActivity() {
         finishActivity(LOADING_ACTIVITY);
-    }
-
-    @Override
-    public void itemsReady() {
-        dismissLoadingActivity();
-        Toast.makeText(context, "Items Ready", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -225,8 +208,8 @@ public class StartActivity extends BaseActivity implements IStartView {
     public void navigateToInstructionsActivity() {
         Intent instructionsIntent = new Intent(StartActivity.this, InstructionsActivity.class);
         reloadContinueData();
-        int phase = (continueValue / 1000) - 1;
-        int step = continueValue % 1000;
+        int phase = (continueValue / PHASE_MULTIPLIER) - 1;
+        int step = continueValue % PHASE_MULTIPLIER;
         instructionsIntent.putExtra(ITEM_INDEX, ((StartPresenter) presenter).getItemIndex());
         instructionsIntent.putExtra(ITEM_CODE, ((StartPresenter) presenter).getItemCode());
         instructionsIntent.putExtra(PHASE_INDEX, phase);
@@ -239,7 +222,7 @@ public class StartActivity extends BaseActivity implements IStartView {
         Log.d("START ACTIVITY", "Navigate to Phase Overview Activity");
         Intent phaseIntent = new Intent(StartActivity.this, PhaseOverviewActivity.class);
         reloadContinueData();
-        int phaseIndex = (continueValue / 1000) - 1;
+        int phaseIndex = (continueValue / PHASE_MULTIPLIER) - 1;
         phaseIntent.putExtra(ITEM_INDEX, ((StartPresenter) presenter).getItemIndex());
         phaseIntent.putExtra(ITEM_CODE, ((StartPresenter) presenter).getItemCode());
         phaseIntent.putExtra(PHASE_INDEX, phaseIndex);
@@ -267,6 +250,14 @@ public class StartActivity extends BaseActivity implements IStartView {
         objIntent.putExtra(ITEM_CODE, code);
         objIntent.putExtra(MESSAGE, getString(R.string.preparing_item));
         startActivityForResult(objIntent, DOWNLOAD_ACTIVITY);
+    }
+
+    private void navigateToItemPhasesActivity() {
+        Intent intent = new Intent(StartActivity.this, ItemPhasesActivity.class);
+        reloadContinueData();
+        intent.putExtra(ITEM_INDEX, ((StartPresenter) presenter).getItemIndex());
+        intent.putExtra(ITEM_CODE, ((StartPresenter) presenter).getItemCode());
+        startActivityForResult(intent, ITEM_PHASES);
     }
 
     private int getContinueValue() {

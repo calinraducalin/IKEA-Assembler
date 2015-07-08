@@ -17,10 +17,10 @@ public interface IStartView extends IBaseView {
 
     void navigateToScanActivity();
     void navigateToItemsActivity();
-    void showLoadingActivity(String message);
+//    void showLoadingActivity(String message);
     void showAlertDialogForType(int type);
     void dismissLoadingActivity();
-    void itemsReady();
+//    void itemsReady();
 
     void navigateToWarningsActivity();
     void navigateToComponentsActivity();

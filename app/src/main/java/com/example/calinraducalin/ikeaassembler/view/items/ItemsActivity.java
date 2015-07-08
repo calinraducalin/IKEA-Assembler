@@ -13,7 +13,7 @@ import com.example.calinraducalin.ikeaassembler.R;
 import com.example.calinraducalin.ikeaassembler.base.BaseCardScrollActivity;
 import com.example.calinraducalin.ikeaassembler.model.Item;
 import com.example.calinraducalin.ikeaassembler.presenter.items.ItemsPresenter;
-import com.example.calinraducalin.ikeaassembler.utlis.ProgressActivity;
+import com.example.calinraducalin.ikeaassembler.utils.ProgressActivity;
 import com.example.calinraducalin.ikeaassembler.view.start.StartActivity;
 
 import java.util.List;
@@ -50,6 +50,7 @@ public class ItemsActivity extends BaseCardScrollActivity implements IItemsView 
             menu.add(0, MENU_CONTINUE, Menu.NONE, R.string.action_continue).setIcon(R.drawable.ic_forward_50);
         }
         menu.add(0, MENU_START_BEGINNING, Menu.NONE, R.string.action_start_beginning).setIcon(R.drawable.ic_angle_50);
+        menu.add(0, MENU_PHASES, Menu.NONE, R.string.action_see_phases).setIcon(R.drawable.ic_directions_50);
         menu.add(0, MENU_DELETE, Menu.NONE, R.string.action_delete).setIcon(R.drawable.ic_delete_50);
 
     }
@@ -116,6 +117,11 @@ public class ItemsActivity extends BaseCardScrollActivity implements IItemsView 
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void navigateToItemPhases() {
+        dismissActivity(StartActivity.ITEM_PHASES);
     }
 
     private void setItemCode(int code) {

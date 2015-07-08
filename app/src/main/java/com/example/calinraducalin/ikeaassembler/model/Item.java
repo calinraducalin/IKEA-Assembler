@@ -127,4 +127,8 @@ public class Item implements Serializable {
     public int getStepsCountForPhase(int phaseIndex) {
         return ((AssemblyPhase) this.phases.get(phaseIndex)).getStepsCount();
     }
+
+    public ArrayList<AssemblyPhase> getPhases() {
+        return phases;
+    }
 }

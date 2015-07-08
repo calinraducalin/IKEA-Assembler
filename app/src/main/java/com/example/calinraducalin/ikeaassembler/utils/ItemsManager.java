@@ -1,4 +1,4 @@
-package com.example.calinraducalin.ikeaassembler.utlis;
+package com.example.calinraducalin.ikeaassembler.utils;
 
 import android.os.Environment;
 
@@ -88,6 +88,10 @@ public class ItemsManager {
         return this.getStep(index, phase, step).getToolsAndComponents();
     }
 
+    public List getPhasesForItem(int index) {
+        return ((Item) this.items.get(index)).getPhases();
+    }
+
     public boolean areWarningsToDisplay(int index, int phase, int step) {
         return this.getStep(index,phase, step).getWarnings() != null;
     }
@@ -174,7 +178,7 @@ public class ItemsManager {
         }
     }
 
-    void deleteRecursive(File fileOrDirectory) {
+    private void deleteRecursive(File fileOrDirectory) {
         if (fileOrDirectory.isDirectory()) {
             for (File child : fileOrDirectory.listFiles()) {
                 deleteRecursive(child);

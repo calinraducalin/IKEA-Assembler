@@ -2,7 +2,7 @@ package com.example.calinraducalin.ikeaassembler.presenter.phaseOverview;
 
 import com.example.calinraducalin.ikeaassembler.base.BasePresenter;
 import com.example.calinraducalin.ikeaassembler.model.AssemblyPhase;
-import com.example.calinraducalin.ikeaassembler.utlis.ItemsManager;
+import com.example.calinraducalin.ikeaassembler.utils.ItemsManager;
 import com.example.calinraducalin.ikeaassembler.view.phaseOverview.IPhaseOverviewView;
 
 /**

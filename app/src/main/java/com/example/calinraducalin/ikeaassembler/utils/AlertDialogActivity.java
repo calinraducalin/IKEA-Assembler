@@ -1,4 +1,4 @@
-package com.example.calinraducalin.ikeaassembler.utlis;
+package com.example.calinraducalin.ikeaassembler.utils;
 
 import android.app.Activity;
 import android.content.Context;

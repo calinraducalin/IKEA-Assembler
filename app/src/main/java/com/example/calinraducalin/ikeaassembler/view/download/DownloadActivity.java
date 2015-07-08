@@ -9,9 +9,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import com.example.calinraducalin.ikeaassembler.model.Item;
-import com.example.calinraducalin.ikeaassembler.utlis.ItemsManager;
-import com.example.calinraducalin.ikeaassembler.utlis.ItemsService;
-import com.example.calinraducalin.ikeaassembler.utlis.ProgressActivity;
+import com.example.calinraducalin.ikeaassembler.utils.ItemsManager;
+import com.example.calinraducalin.ikeaassembler.utils.ItemsService;
+import com.example.calinraducalin.ikeaassembler.utils.ProgressActivity;
 import com.example.calinraducalin.ikeaassembler.view.start.IStartView;
 import com.google.android.glass.media.Sounds;
 import com.google.android.glass.widget.Slider;

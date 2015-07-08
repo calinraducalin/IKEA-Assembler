@@ -3,7 +3,7 @@ package com.example.calinraducalin.ikeaassembler.presenter.warnings;
 import android.util.Log;
 
 import com.example.calinraducalin.ikeaassembler.base.BasePresenter;
-import com.example.calinraducalin.ikeaassembler.utlis.ItemsManager;
+import com.example.calinraducalin.ikeaassembler.utils.ItemsManager;
 import com.example.calinraducalin.ikeaassembler.view.warnings.IWarningsView;
 
 import java.util.List;

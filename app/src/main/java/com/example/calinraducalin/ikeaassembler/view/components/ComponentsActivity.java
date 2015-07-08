@@ -42,7 +42,7 @@ public class ComponentsActivity extends BaseCardScrollActivity implements ICompo
             stepIndex = extras.getInt(STEP_INDEX);
         } else {
             audioHelpManager.speakTheText("Please make sure you have everything you need for assembling this item.");
-            setContinueValue(2);
+            setContinueValue(COMPONENTS_ID);
         }
 
     }
@@ -87,13 +87,13 @@ public class ComponentsActivity extends BaseCardScrollActivity implements ICompo
 
     @Override
     public void navigateToInstructionsActivity() {
-        setContinueValue(1000); //1000 (first phase) + 0 (first step)
+        setContinueValue(PHASE_MULTIPLIER); //1000 (first phase) + 0 (first step)
         dismissActivity(StartActivity.PHASE_OVERVIEW_ACTIVITY);
     }
 
     @Override
     public void navigateBackToWarningsActivity() {
-        setContinueValue(1); //1 == Warnings
+        setContinueValue(WARNINGS_ID); //1 == Warnings
         dismissActivity(StartActivity.WARNINGS_ACTIVITY);
     }
 

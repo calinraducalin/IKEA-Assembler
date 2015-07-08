@@ -125,7 +125,7 @@ public class InstructionsActivity extends BaseCardScrollActivity implements IIns
 
     @Override
     public void showPreviousPhaseOverview() {
-        setContinueValue(1000 * (phaseIndex + 1));
+        setContinueValue(PHASE_MULTIPLIER * (phaseIndex + 1));
         dismissActivity(StartActivity.PHASE_OVERVIEW_ACTIVITY);
     }
 
@@ -133,7 +133,7 @@ public class InstructionsActivity extends BaseCardScrollActivity implements IIns
     public void showNextPhaseOverview() {
         phaseIndex++;
         stepIndex = 0;
-        setContinueValue(1000 * (phaseIndex + 1));
+        setContinueValue(PHASE_MULTIPLIER * (phaseIndex + 1));
         dismissActivity(StartActivity.PHASE_OVERVIEW_ACTIVITY);
     }
 
@@ -167,7 +167,7 @@ public class InstructionsActivity extends BaseCardScrollActivity implements IIns
         isLastStep = ((InstructionsPresenter) presenter).isLastStepForPhase(itemIndex, phaseIndex, stepIndex - 1);
         canDisplayComponents = ((InstructionsPresenter) presenter).canDisplayComponents(itemIndex, phaseIndex, stepIndex - 1);
         canDisplayWarnings = ((InstructionsPresenter) presenter).areWarningsToDisplay(itemIndex, phaseIndex, stepIndex - 1);
-        setContinueValue(1000 * (phaseIndex + 1) + stepIndex);
+        setContinueValue(PHASE_MULTIPLIER * (phaseIndex + 1) + stepIndex);
 
         if (canDisplayWarnings) {
             showWarningsForStep();

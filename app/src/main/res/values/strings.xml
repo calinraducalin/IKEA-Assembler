@@ -15,6 +15,7 @@
     <string name="action_back_warnings">Back to warnings</string>
     <string name="action_back_items">Back to items</string>
     <string name="action_start_beginning">Start from scratch</string>
+    <string name="action_see_phases">Jump to phase</string>
     <string name="action_items">Check items</string>
     <string name="action_components">Check components</string>
     <string name="action_instructions">Instructions</string>
@@ -34,6 +35,7 @@
     <string name="action_skip_components">Skip components</string>
     <string name="action_begin_assembly">Begin assembling</string>
     <string name="action_hide_components">Hide components</string>
+    <string name="action_select_phase">Select this phase</string>
     <string name="action_show_components">Show components</string>
     <string name="action_hide_warnings">Hide warnings</string>
     <string name="action_show_warnings">Show warnings</string>

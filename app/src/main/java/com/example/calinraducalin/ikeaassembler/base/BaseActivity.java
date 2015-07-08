@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.example.calinraducalin.ikeaassembler.utlis.AudioHelpManager;
+import com.example.calinraducalin.ikeaassembler.utils.AudioHelpManager;
 import com.google.android.glass.media.Sounds;
 import com.google.android.glass.touchpad.GestureDetector;
 import com.google.android.glass.view.WindowUtils;
@@ -21,12 +21,17 @@ import com.google.android.glass.view.WindowUtils;
  * Created by calinraducalin on 17/06/15.
  */
 public abstract class BaseActivity extends Activity {
+    public static final int WARNINGS_ID = 1;
+    public static final int COMPONENTS_ID = 2;
+    public static final int PHASE_MULTIPLIER = 1000;
+
     protected static final String STEP_INDEX = "stepIndex";
     protected static final String PHASE_INDEX = "phaseIndex";
     protected static final String ITEM_INDEX = "itemIndex";
     protected static final String ITEM_CODE = "itemCode";
     protected static final String PREFS_NAME = "MyPrefsFile";
     protected static final String CONTINUE_KEY = "continue";
+
     protected Context context;
     protected BasePresenter presenter;
     protected AudioHelpManager audioHelpManager;

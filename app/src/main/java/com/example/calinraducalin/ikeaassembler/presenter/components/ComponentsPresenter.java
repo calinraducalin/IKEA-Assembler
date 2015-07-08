@@ -3,7 +3,7 @@ package com.example.calinraducalin.ikeaassembler.presenter.components;
 import android.util.Log;
 
 import com.example.calinraducalin.ikeaassembler.base.BasePresenter;
-import com.example.calinraducalin.ikeaassembler.utlis.ItemsManager;
+import com.example.calinraducalin.ikeaassembler.utils.ItemsManager;
 import com.example.calinraducalin.ikeaassembler.view.components.IComponentsView;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.calinraducalin.ikeaassembler.utlis;
+package com.example.calinraducalin.ikeaassembler.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

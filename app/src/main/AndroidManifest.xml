@@ -30,12 +30,13 @@
                 android:name="com.google.android.glass.VoiceTrigger"
                 android:resource="@xml/voice_trigger" />
         </activity>
-        <activity android:name=".utlis.ProgressActivity"/>
+        <activity android:name=".utils.ProgressActivity"/>
         <activity android:name=".view.items.ItemsActivity"/>
-        <activity android:name=".utlis.AlertDialogActivity"/>
+        <activity android:name=".utils.AlertDialogActivity"/>
         <activity android:name=".view.warnings.WarningsActivity"/>
         <activity android:name=".view.download.DownloadActivity"/>
         <activity android:name=".view.components.ComponentsActivity"/>
+        <activity android:name=".view.itemPhases.ItemPhasesActivity"/>
         <activity android:name=".view.instructions.InstructionsActivity"/>
         <activity android:name=".view.phaseOverview.PhaseOverviewActivity"/>
 

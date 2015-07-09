@@ -10,7 +10,8 @@
     <string name="action_back">Back to main menu</string>
     <string name="action_delete">Delete this</string>
     <string name="action_scan">Scan QR code</string>
-    <string name="action_start_phase">Start this phase</string>
+    <string name="action_contact">Contact provider</string>
+    <string name="action_start_phase">Begin this phase</string>
     <string name="action_back_components">Back to components</string>
     <string name="action_back_warnings">Back to warnings</string>
     <string name="action_back_items">Back to items</string>
@@ -28,8 +29,8 @@
     <string name="action_previos_phase">Show prior phase</string>
     <string name="action_back_phase_overview">Show phase preview</string>
     <string name="action_need">What do I need?</string>
-    <string name="action_next">Next picture</string>
-    <string name="action_previous">Previous picture</string>
+    <string name="action_next">Show next</string>
+    <string name="action_previous">Show previous</string>
     <string name="action_skip_warnings">Skip Warnings</string>
     <string name="action_skip_items">Skip Items</string>
     <string name="action_skip_components">Skip components</string>

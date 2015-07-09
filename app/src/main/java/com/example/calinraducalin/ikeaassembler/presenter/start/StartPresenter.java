@@ -31,6 +31,9 @@ public class StartPresenter extends BasePresenter {
             case IStartView.MENU_QR_CODE:
                 view.navigateToScanActivity();
                 return true;
+            case IStartView.MENU_CALL_PROVIDER:
+                view.callLocalProvider();
+                return true;
 
             default:
                 return false;

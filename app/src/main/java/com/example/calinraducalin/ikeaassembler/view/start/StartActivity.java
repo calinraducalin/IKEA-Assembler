@@ -76,6 +76,7 @@ public class StartActivity extends BaseActivity implements IStartView {
         }
         //default menu item
         menu.add(0, MENU_QR_CODE, Menu.NONE, R.string.action_scan).setIcon(R.drawable.ic_search_50);
+        menu.add(0, MENU_CALL_PROVIDER, Menu.NONE, R.string.action_contact).setIcon(R.drawable.ic_phone_50);
     }
 
 
@@ -236,6 +237,14 @@ public class StartActivity extends BaseActivity implements IStartView {
         phaseIntent.putExtra(TOTAL_PHASES, ((StartPresenter) presenter).getPhasesCount());
 
         startActivityForResult(phaseIntent, PHASE_OVERVIEW_ACTIVITY);
+    }
+
+    @Override
+    public void callLocalProvider() {
+        Intent localIntent = new Intent();
+        localIntent.putExtra("com.google.glass.extra.PHONE_NUMBER", "123-123-123");
+        localIntent.setAction("com.google.glass.action.CALL_DIAL");
+        sendBroadcast(localIntent);
     }
 
     @Override

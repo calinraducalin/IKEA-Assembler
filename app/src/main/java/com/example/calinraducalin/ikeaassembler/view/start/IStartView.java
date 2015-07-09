@@ -9,6 +9,7 @@ public interface IStartView extends IBaseView {
     int MENU_CONTINUE = 1;
     int MENU_ITEMS_LIST = 2;
     int MENU_QR_CODE = 3;
+    int MENU_CALL_PROVIDER = 4;
     int RESULT_CODE_ITEM_NOT_FOUND = 1000;
     int RESULT_CODE_NETWORK_ERROR = 1001;
     int RESULT_CODE_UNKNOWN_ERROR = 1002;
@@ -26,4 +27,5 @@ public interface IStartView extends IBaseView {
     void navigateToComponentsActivity();
     void navigateToInstructionsActivity();
     void navigateToPhaseOverviewActivity();
+    void callLocalProvider();
 }

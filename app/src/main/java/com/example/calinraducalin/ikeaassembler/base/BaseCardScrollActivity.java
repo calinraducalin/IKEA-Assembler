@@ -39,11 +39,12 @@ public abstract class BaseCardScrollActivity extends BaseActivity implements IBa
     protected void setupMenu(int featureId, Menu menu) {
         menu.clear();
 //        Log.d("BASE CARD SCROLL", "last selected item = " + lastSelectedItem);
+        boolean showExtraMenuOptions = (!(this instanceof ComponentsActivity) || !((ComponentsActivity) this).isForStep()) &&
+                (!(this instanceof WarningsActivity) || !((WarningsActivity) this).isForStep());
 
         if (featureId == WindowUtils.FEATURE_VOICE_COMMANDS) {
             //only for voice menu
-            if ((!(this instanceof ComponentsActivity) || !((ComponentsActivity) this).isForStep()) &&
-                    (!(this instanceof WarningsActivity) || !((WarningsActivity) this).isForStep())) {
+            if (showExtraMenuOptions) {
                 //if it is not ComponentsForStep  OR  WarningsForStep
                 menu.add(0, MENU_BACK, Menu.NONE, R.string.action_back).setIcon(R.drawable.ic_arrow_left_50);
             }
@@ -58,6 +59,7 @@ public abstract class BaseCardScrollActivity extends BaseActivity implements IBa
                 }
             }
         }
+
     }
 
     protected abstract void setupCardsList();

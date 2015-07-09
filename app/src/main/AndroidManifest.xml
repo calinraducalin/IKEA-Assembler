@@ -20,7 +20,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".view.start.StartActivity"
-            android:icon="@drawable/ic_glass_logo"
+            android:icon="@drawable/ikea_app_image"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="com.google.android.glass.action.VOICE_TRIGGER" />

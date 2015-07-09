@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
-import android.view.Window;
 import android.widget.ImageView;
 
 import com.example.calinraducalin.ikeaassembler.R;
@@ -20,8 +19,6 @@ import com.example.calinraducalin.ikeaassembler.view.itemPhases.ItemPhasesActivi
 import com.example.calinraducalin.ikeaassembler.view.items.ItemsActivity;
 import com.example.calinraducalin.ikeaassembler.view.phaseOverview.PhaseOverviewActivity;
 import com.example.calinraducalin.ikeaassembler.view.warnings.WarningsActivity;
-import com.google.android.glass.view.WindowUtils;
-import com.parse.ParseAnalytics;
 
 
 public class StartActivity extends BaseActivity implements IStartView {
@@ -48,17 +45,6 @@ public class StartActivity extends BaseActivity implements IStartView {
         super.onCreate(bundle);
         presenter = new StartPresenter(this);
         buildView();
-
-        ParseAnalytics.trackAppOpenedInBackground(getIntent());
-
-//        Map<String, String> dimensions = new HashMap<String, String>();
-//        // What type of news is this?
-//        dimensions.put("category", "politics");
-//        // Is it a weekday or the weekend?
-//        dimensions.put("dayType", "weekday");
-//        // Send the dimensions to Parse along with the 'read' event
-//
-//        ParseAnalytics.trackEventInBackground("read", dimensions);
     }
 
     @Override
@@ -74,10 +60,6 @@ public class StartActivity extends BaseActivity implements IStartView {
     @Override
     protected void setupMenu(int featureId, Menu menu) {
         menu.clear();
-
-        if (featureId == WindowUtils.FEATURE_VOICE_COMMANDS || featureId == Window.FEATURE_OPTIONS_PANEL) {
-            //only for voice menu
-        }
 
         if (continueValue != -1) {
             menu.add(0, MENU_CONTINUE, Menu.NONE, R.string.action_continue).setIcon(R.drawable.ic_forward_50);

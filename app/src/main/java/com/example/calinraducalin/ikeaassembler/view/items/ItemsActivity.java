@@ -49,7 +49,7 @@ public class ItemsActivity extends BaseCardScrollActivity implements IItemsView 
         if (isContinue && canContinueItem) {
             menu.add(0, MENU_CONTINUE, Menu.NONE, R.string.action_continue).setIcon(R.drawable.ic_forward_50);
         }
-        menu.add(0, MENU_START_BEGINNING, Menu.NONE, R.string.action_start_beginning).setIcon(R.drawable.ic_angle_50);
+        menu.add(0, MENU_START_BEGINNING, Menu.NONE, R.string.action_start_beginning).setIcon(R.drawable.ikea_app_image);
         menu.add(0, MENU_PHASES, Menu.NONE, R.string.action_see_phases).setIcon(R.drawable.ic_directions_50);
         menu.add(0, MENU_DELETE, Menu.NONE, R.string.action_delete).setIcon(R.drawable.ic_delete_50);
 

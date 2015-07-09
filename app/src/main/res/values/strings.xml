@@ -22,10 +22,11 @@
     <string name="action_instructions">Instructions</string>
     <string name="action_next_step">Show next step</string>
     <string name="action_next_phase">Show next phase</string>
-    <string name="action_skip_phase">Skip this phase</string>
+    <string name="action_skip_phase">Jump to next phase</string>
     <string name="action_repeat_phase">Repeat this phase</string>
-    <string name="action_skip_step">Skip this step</string>
+    <string name="action_skip_step">Jump to next step</string>
     <string name="action_previos_step">Show previous step</string>
+    <string name="action_progress">Display progress</string>
     <string name="action_previos_phase">Show prior phase</string>
     <string name="action_back_phase_overview">Show phase preview</string>
     <string name="action_need">What do I need?</string>
@@ -36,6 +37,7 @@
     <string name="action_skip_components">Skip components</string>
     <string name="action_begin_assembly">Begin assembling</string>
     <string name="action_hide_components">Hide components</string>
+    <string name="action_hide_progress">Hide progress</string>
     <string name="action_select_phase">Select this phase</string>
     <string name="action_show_components">Show components</string>
     <string name="action_hide_warnings">Hide warnings</string>

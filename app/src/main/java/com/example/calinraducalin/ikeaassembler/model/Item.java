@@ -8,23 +8,24 @@ import java.util.List;
  * Created by calinraducalin on 15/05/15.
  */
 public class Item implements Serializable {
-    private ArrayList<Object> components;
+    private ArrayList<ItemComponent> components;
     private ArrayList<AssemblyPhase> phases;
-    private ArrayList<Object> warnings;
+    private ArrayList<Warning> warnings;
     private ArrayList<Tool> tools;
-    private String objectId;
     private Integer code;
+    private Integer time;
     private String name;
     private String image;
 
     public Item(String name, Integer code, String image) {
         this.components = new ArrayList<>();
-        this.phases = new ArrayList<AssemblyPhase>();
+        this.phases = new ArrayList<>();
         this.warnings = new ArrayList<>();
-        this.tools = new ArrayList<Tool>();
+        this.tools = new ArrayList<>();
         this.image = image;
         this.code = code;
         this.name = name;
+        this.time = 0;
     }
 
     public Integer getCode() {
@@ -39,15 +40,11 @@ public class Item implements Serializable {
         return image;
     }
 
-    public String getObjectId() {
-        return objectId;
-    }
-
-    public List<Object> getWarnings() {
+    public List getWarnings() {
         return this.warnings;
     }
 
-    public List<Object> getToolsAndComponents() {
+    public List getToolsAndComponents() {
         List toolsAndComponents = new ArrayList(tools);
         toolsAndComponents.addAll(this.components);
 
@@ -117,7 +114,7 @@ public class Item implements Serializable {
     }
 
     public boolean shouldRepeatPhase(int phase) {
-        return ((AssemblyPhase) this.phases.get(phase)).getRepeat() > 1;
+        return (this.phases.get(phase)).getRepeat() > 1;
     }
 
     public int getPhasesCount() {
@@ -125,10 +122,35 @@ public class Item implements Serializable {
     }
 
     public int getStepsCountForPhase(int phaseIndex) {
-        return ((AssemblyPhase) this.phases.get(phaseIndex)).getStepsCount();
+        return (this.phases.get(phaseIndex)).getStepsCount();
+    }
+
+    public int computeTimeLeft(int phaseIndex, int stepIndex) {
+        int timeLeft = 0;
+
+        int totalPhases = this.phases.size();
+        for (int i = phaseIndex; i < totalPhases; i++) {
+            int startStepIndex = i == phaseIndex ? stepIndex : 0;
+            AssemblyPhase currentPhase = this.phases.get(i);
+            int totalSteps = currentPhase.getStepsCount();
+            int repeat = currentPhase.getRepeat();
+            for (int j = startStepIndex; j < totalSteps; j++) {
+                timeLeft += repeat * currentPhase.getStep(j).getTime();
+            }
+        }
+
+        return timeLeft;
     }
 
     public ArrayList<AssemblyPhase> getPhases() {
         return phases;
+    }
+
+    public void updateTime(int value) {
+        time += value;
+    }
+
+    public Integer getTime() {
+        return time;
     }
 }

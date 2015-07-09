@@ -16,10 +16,6 @@ public class StepComponent implements Serializable{
         this.extraImage = extraImage;
     }
 
-    public void setExtraImage(String extraImage) {
-        this.extraImage = extraImage;
-    }
-
     public Component getComponent() {
         return this.component;
     }

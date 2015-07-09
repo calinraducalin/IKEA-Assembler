@@ -38,6 +38,7 @@
         <activity android:name=".view.components.ComponentsActivity"/>
         <activity android:name=".view.itemPhases.ItemPhasesActivity"/>
         <activity android:name=".view.instructions.InstructionsActivity"/>
+        <activity android:name=".view.itemProgress.ItemProgressActivity"/>
         <activity android:name=".view.phaseOverview.PhaseOverviewActivity"/>
 
     </application>

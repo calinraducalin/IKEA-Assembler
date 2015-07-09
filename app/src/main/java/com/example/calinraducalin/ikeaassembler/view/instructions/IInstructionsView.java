@@ -14,6 +14,7 @@ public interface IInstructionsView extends IBaseView {
     int MENU_REPEAT_PHASE = 8;
     int MENU_BACK_PHASE_OVERVIEW = 9;
     int MENU_SHOW_WARNINGS = 10;
+    int MENU_PROGRESS = 11;
 
 
     void showNextStep();
@@ -23,4 +24,5 @@ public interface IInstructionsView extends IBaseView {
     void showPreviousPhaseOverview();
     void showNextPhaseOverview();
     void showWarningsForStep();
+    void showItemProgressActivity();
 }

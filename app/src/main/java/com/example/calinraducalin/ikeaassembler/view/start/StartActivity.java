@@ -21,6 +21,7 @@ import com.example.calinraducalin.ikeaassembler.view.items.ItemsActivity;
 import com.example.calinraducalin.ikeaassembler.view.phaseOverview.PhaseOverviewActivity;
 import com.example.calinraducalin.ikeaassembler.view.warnings.WarningsActivity;
 import com.google.android.glass.view.WindowUtils;
+import com.parse.ParseAnalytics;
 
 
 public class StartActivity extends BaseActivity implements IStartView {
@@ -47,6 +48,17 @@ public class StartActivity extends BaseActivity implements IStartView {
         super.onCreate(bundle);
         presenter = new StartPresenter(this);
         buildView();
+
+        ParseAnalytics.trackAppOpenedInBackground(getIntent());
+
+//        Map<String, String> dimensions = new HashMap<String, String>();
+//        // What type of news is this?
+//        dimensions.put("category", "politics");
+//        // Is it a weekday or the weekend?
+//        dimensions.put("dayType", "weekday");
+//        // Send the dimensions to Parse along with the 'read' event
+//
+//        ParseAnalytics.trackEventInBackground("read", dimensions);
     }
 
     @Override

@@ -20,7 +20,7 @@ public class ItemsManager {
     private static final String itemsFileName = "/items.ser";
 
     private static ItemsManager sharedInstance;
-    private ArrayList<Object> items;
+    private ArrayList<Item> items;
     private IItemsPresenter itemsDelegate;
 
     public ItemsManager(){
@@ -75,13 +75,13 @@ public class ItemsManager {
         return items;
     }
     public List getWarningsForItem(int index) {
-        return ((Item) this.items.get(index)).getWarnings();
+        return (this.items.get(index)).getWarnings();
     }
     public List getWarningsForStep(int index, int phase, int step) {
-        return ((Item) this.items.get(index)).getStep(phase, step).getWarnings();
+        return (this.items.get(index)).getStep(phase, step).getWarnings();
     }
     public List getToolsAndComponentsForItem(int index) {
-        return ((Item) this.items.get(index)).getToolsAndComponents();
+        return (this.items.get(index)).getToolsAndComponents();
     }
 
     public List getToolsAndComponentsForStep(int index, int phase, int step) {
@@ -89,23 +89,27 @@ public class ItemsManager {
     }
 
     public List getPhasesForItem(int index) {
-        return ((Item) this.items.get(index)).getPhases();
+        return (this.items.get(index)).getPhases();
     }
 
     public boolean areWarningsToDisplay(int index, int phase, int step) {
         return this.getStep(index,phase, step).getWarnings() != null;
     }
 
+    public Item getItem(int itemIndex) {
+        return this.items.get(itemIndex);
+    }
+
     public Step getStep(int index, int phase, int step) {
-        return ((Item) this.items.get(index)).getStep(phase, step);
+        return (this.items.get(index)).getStep(phase, step);
     }
 
     public AssemblyPhase getPhaseForItem(int index, int phase) {
-        return ((Item) this.items.get(index)).getAssamblyPhase(phase);
+        return (this.items.get(index)).getAssamblyPhase(phase);
     }
 
     public void deleteItemFromLocalDataStore(int index) {
-        Item item = ((Item) items.remove(index));
+        Item item = (items.remove(index));
         if (item != null) {
             //delete assets folder
             File dir = new File(Environment.getExternalStorageDirectory() + "/" + item.getCode());
@@ -120,9 +124,9 @@ public class ItemsManager {
 
     public String isItemDownloaded(Integer code) {
         if (items != null) {
-            for (Object item : items) {
-                if (((Item) item).getCode().intValue() == code.intValue()) {
-                    return ((Item) item).getName();
+            for (Item item : items) {
+                if (item.getCode().intValue() == code.intValue()) {
+                    return item.getName();
                 }
             }
         }
@@ -130,23 +134,27 @@ public class ItemsManager {
     }
 
     public boolean isLastStep(int index, int phase, int step) {
-        return ((AssemblyPhase) ((Item) this.items.get(index)).getAssamblyPhase(phase)).isLastStep(step);
+        return (this.items.get(index)).getAssamblyPhase(phase).isLastStep(step);
     }
 
     public boolean isLastPhase(int index, int phase) {
-        return  ((Item) this.items.get(index)).isLastPhase(phase);
+        return  (this.items.get(index)).isLastPhase(phase);
     }
 
     public boolean shouldRepeatPhase(int index, int phase) {
-        return  ((Item) this.items.get(index)).shouldRepeatPhase(phase);
+        return  (this.items.get(index)).shouldRepeatPhase(phase);
     }
 
     public int getPhasesCount(int index) {
-        return  ((Item) this.items.get(index)).getPhasesCount();
+        return  (this.items.get(index)).getPhasesCount();
+    }
+
+    public int computeTimeLeft(int itemIndex, int phaseIndex, int stepIndex) {
+        return this.items.get(itemIndex).computeTimeLeft(phaseIndex, stepIndex);
     }
 
     public int getStepsCountForPhase(int itemIndex, int phaseIndex) {
-        return  ((Item) this.items.get(itemIndex)).getStepsCountForPhase(phaseIndex);
+        return  (this.items.get(itemIndex)).getStepsCountForPhase(phaseIndex);
     }
 
     private void saveItems() {

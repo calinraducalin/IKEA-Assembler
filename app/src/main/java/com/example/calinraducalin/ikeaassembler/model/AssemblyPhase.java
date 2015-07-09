@@ -13,7 +13,7 @@ public class AssemblyPhase implements Serializable{
     private String image;
 
     public AssemblyPhase(String name, String imageFileName, int repeat) {
-        this.steps = new ArrayList<Step>();
+        this.steps = new ArrayList<>();
         this.repeat = repeat;
         this.image = imageFileName;
         this.name = name;

@@ -42,6 +42,7 @@ public class ProgressActivity extends Activity {
                 public void onGracePeriodEnd() {
                     // Play a SUCCESS sound to indicate the end of the grace period.
                     card.setText(R.string.success);
+                    card.setIcon(R.drawable.ic_done_50);
                     cardScrollAdapter.notifyDataSetChanged();
                     AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
                     am.playSoundEffect(Sounds.SUCCESS);
@@ -65,12 +66,15 @@ public class ProgressActivity extends Activity {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         mIntent = getIntent();
+        isGracePeriod = mIntent.getExtras().getBoolean("isGrace");
         String loadingMessage = mIntent.getExtras().getString("message", "Please Wait...");
         buildView(loadingMessage);
         setupCardScroller();
         setupSlider();
         setContentView(mCardScroller);
-        checkSliderType();
+        if (isGracePeriod) {
+            mGracePeriod = mSlider.startGracePeriod(mGracePeriodListener);
+        }
     }
 
     @Override
@@ -132,8 +136,9 @@ public class ProgressActivity extends Activity {
      * Builds a Glass styled "Hello World!" view using the {@link CardBuilder} class.
      */
     private void buildView(String text) {
-        card = new CardBuilder(this, CardBuilder.Layout.TEXT);
+        card = new CardBuilder(this, CardBuilder.Layout.MENU);
         card.setText(text);
+        card.setIcon(isGracePeriod ? R.drawable.ic_delete_50 : R.drawable.ic_timer_50);
     }
 
     protected void updateMessage(String text, String footnote) {
@@ -146,10 +151,4 @@ public class ProgressActivity extends Activity {
 //        cardScrollAdapter.notifyDataSetChanged();
     }
 
-    private void checkSliderType() {
-        isGracePeriod = mIntent.getExtras().getBoolean("isGrace");
-        if (isGracePeriod) {
-            mGracePeriod = mSlider.startGracePeriod(mGracePeriodListener);
-        }
-    }
 }

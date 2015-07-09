@@ -10,6 +10,7 @@ import com.example.calinraducalin.ikeaassembler.R;
 import com.example.calinraducalin.ikeaassembler.base.BaseCardScrollActivity;
 import com.example.calinraducalin.ikeaassembler.presenter.instructions.InstructionsPresenter;
 import com.example.calinraducalin.ikeaassembler.view.components.ComponentsActivity;
+import com.example.calinraducalin.ikeaassembler.view.itemProgress.ItemProgressActivity;
 import com.example.calinraducalin.ikeaassembler.view.start.StartActivity;
 import com.example.calinraducalin.ikeaassembler.view.warnings.WarningsActivity;
 
@@ -99,12 +100,15 @@ public class InstructionsActivity extends BaseCardScrollActivity implements IIns
             }
         }
 
-        if (stepIndex == 1) {
-            menu.add(0, MENU_BACK_PHASE_OVERVIEW, Menu.NONE, R.string.action_back_phase_overview).setIcon(R.drawable.ic_arrow_left_50);
-        } else {
-            menu.add(0, MENU_PREVIOUS_STEP, Menu.NONE, R.string.action_previos_step).setIcon(R.drawable.ic_arrow_left_50);
+        if (lastSelectedItem == 0) {
+            if (stepIndex == 1) {
+                menu.add(0, MENU_BACK_PHASE_OVERVIEW, Menu.NONE, R.string.action_back_phase_overview).setIcon(R.drawable.ic_arrow_left_50);
+            } else {
+                menu.add(0, MENU_PREVIOUS_STEP, Menu.NONE, R.string.action_previos_step).setIcon(R.drawable.ic_arrow_left_50);
+            }
         }
 
+        menu.add(0, MENU_PROGRESS, Menu.NONE, R.string.action_progress).setIcon(R.drawable.ic_help_50);
     }
 
     @Override
@@ -161,6 +165,12 @@ public class InstructionsActivity extends BaseCardScrollActivity implements IIns
     public void showWarningsForStep() {
         Intent warningsIntent = new Intent(InstructionsActivity.this, WarningsActivity.class);
         prepareAndStartActivity(warningsIntent);
+    }
+
+    @Override
+    public void showItemProgressActivity() {
+        Intent progressIntent = new Intent(InstructionsActivity.this, ItemProgressActivity.class);
+        prepareAndStartActivity(progressIntent);
     }
 
     private void reloadItemFlags() {

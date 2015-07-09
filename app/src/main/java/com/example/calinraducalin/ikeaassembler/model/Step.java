@@ -12,13 +12,15 @@ public class Step implements Serializable{
     private ArrayList<Warning> warnings;
     private ArrayList<Substep> substeps;
     private Integer number;
+    private Integer time;
     private Tool tool;
 
-    public Step(Integer number, Tool tool) {
-        this.components = new ArrayList<StepComponent>();
-        this.substeps = new ArrayList<Substep>();
+    public Step(Integer number, Tool tool, Integer time) {
+        this.components = new ArrayList<>();
+        this.substeps = new ArrayList<>();
         this.number = number;
         this.tool = tool;
+        this.time = time;
     }
 
     public List getSubsteps() {
@@ -58,6 +60,10 @@ public class Step implements Serializable{
         }
 
         return toolAndComponents;
+    }
+
+    public Integer getTime() {
+        return time;
     }
 
     public ArrayList<Warning> getWarnings() {

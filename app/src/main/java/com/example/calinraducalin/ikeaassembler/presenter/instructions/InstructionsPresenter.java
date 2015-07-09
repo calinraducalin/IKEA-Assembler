@@ -50,6 +50,9 @@ public class InstructionsPresenter extends BasePresenter {
             case IInstructionsView.MENU_SHOW_WARNINGS:
                 this.view.showWarningsForStep();
                 return true;
+            case IInstructionsView.MENU_PROGRESS:
+                this.view.showItemProgressActivity();
+                return true;
             default:
                 return false;
         }

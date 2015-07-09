@@ -28,6 +28,7 @@ import java.util.List;
 public class Parser {
     private static final String repeatKey = "repeat";
     private static final String numberKey = "number";
+    private static final String timeKey = "time";
     private static final String nameKey = "name";
     private static final String imageKey = "image";
     private static final String textKey = "text";
@@ -127,7 +128,7 @@ public class Parser {
         if (steps != null) {
             for (ParseObject stepObject : steps) {
                 if (stepObject.isDataAvailable()) {
-                    Step step = parseStep(item, stepObject, folderName, delegate);
+                    Step step = parseStep(item, stepObject, folderName, delegate, repeat);
                     phase.addStep(step);
                 }
             }
@@ -136,8 +137,9 @@ public class Parser {
         return phase;
     }
 
-    private static Step parseStep(Item item, ParseObject object, String folderName, ItemsServiceDelegate delegate) {
+    private static Step parseStep(Item item, ParseObject object, String folderName, ItemsServiceDelegate delegate, Integer repeat) {
         Integer number = ((Integer) object.get(numberKey));
+        Integer time = ((Integer) object.get(timeKey));
         delegate.updateProgressActivity(stepKey, number.toString());
         Tool tool = null;
 
@@ -155,8 +157,8 @@ public class Parser {
                 }
             }
         }
-        Step step = new Step(number, tool);
-
+        Step step = new Step(number, tool, time);
+        item.updateTime(repeat * time);
         //parse warnings for step
         List<ParseObject> objects = ((List) object.get(warningsKey));
         if (objects != null) {

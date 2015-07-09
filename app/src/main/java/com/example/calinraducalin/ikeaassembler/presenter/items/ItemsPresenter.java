@@ -57,7 +57,7 @@ public class ItemsPresenter extends BasePresenter implements IItemsPresenter {
 
     }
 
-    public List<Object>getList() {
+    public List getList() {
         return ItemsManager.getSharedInstance().getItems();
     }
 

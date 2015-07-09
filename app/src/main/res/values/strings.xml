@@ -51,6 +51,7 @@
     <string name="alert_text_item_not_found">Item not found</string>
     <string name="alert_footnote_item_not_found">TAP to scan again the code</string>
     <string name="alert_text_invalid_code">The QR code is not valid</string>
+    <string name="alert_text_test_item">This item has no instructions</string>
     <string name="alert_footnote_invalid_code">TAP to scan again the code</string>
     <string name="alert_text_default">Unknown Error</string>
     <string name="alert_footnote_default"> </string>

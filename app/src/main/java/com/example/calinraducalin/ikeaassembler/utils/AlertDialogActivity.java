@@ -23,6 +23,7 @@ public class AlertDialogActivity extends Activity {
     public static final int ALERT_TYPE_NO_NETWORK = 1002;
     public static final int ALERT_TYPE_ITEM_NOT_FOUND = 1003;
     public static final int ALERT_TYPE_INVALID_CODE = 1004;
+    public static final int ALERT_TYPE_TEST_ITEM = 1005;
 
 
     private GestureDetector gestureDetector;
@@ -66,6 +67,11 @@ public class AlertDialogActivity extends Activity {
                 image = R.drawable.ic_warning_150;
                 text = R.string.alert_text_invalid_code;
                 footnote = R.string.alert_footnote_invalid_code;
+                break;
+            case ALERT_TYPE_TEST_ITEM:
+                image = R.drawable.ic_cloud_sad_150;
+                text = R.string.alert_text_test_item;
+                footnote = R.string.alert_footnote_default;
                 break;
 
             default:

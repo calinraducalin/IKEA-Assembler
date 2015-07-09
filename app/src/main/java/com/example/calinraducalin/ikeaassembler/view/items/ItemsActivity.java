@@ -121,6 +121,8 @@ public class ItemsActivity extends BaseCardScrollActivity implements IItemsView 
 
     @Override
     public void navigateToItemPhases() {
+        setContinueValue(-1);
+        setItemCode(((ItemsPresenter) presenter).getCurrentItemCode());
         dismissActivity(StartActivity.ITEM_PHASES);
     }
 

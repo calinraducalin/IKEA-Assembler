@@ -37,6 +37,7 @@ public class ItemsPresenter extends BasePresenter implements IItemsPresenter {
         switch (option) {
             case IItemsView.MENU_START_BEGINNING:
                 //TODO: add functionality
+
                 this.view.startInstructions();
                 Log.d("ITEMS_ACTIVITY", "Start instructions from scratch");
                 return true;

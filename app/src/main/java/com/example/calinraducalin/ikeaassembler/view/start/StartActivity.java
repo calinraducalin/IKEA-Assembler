@@ -24,6 +24,7 @@ import com.google.android.glass.view.WindowUtils;
 
 
 public class StartActivity extends BaseActivity implements IStartView {
+    private static final int HEMNES_DAYBED_CODE = 12345678;
     public static final String TOTAL_PHASES = "totalPhases";
     private static final int QR_CODE_MODE = 100;
     private static final int LOADING_ACTIVITY = 101;
@@ -49,8 +50,8 @@ public class StartActivity extends BaseActivity implements IStartView {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         reloadContinueData();
         ImageView imageView = ((ImageView) findViewById(R.id.imageView));
         if (imageView != null) {
@@ -132,7 +133,7 @@ public class StartActivity extends BaseActivity implements IStartView {
             ((StartPresenter) this.presenter).handleContinue();
         } else if (resultCode == ITEM_PHASES) {
             navigateToItemPhasesActivity();
-        }else {
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
 
@@ -187,10 +188,15 @@ public class StartActivity extends BaseActivity implements IStartView {
 
     @Override
     public void navigateToWarningsActivity() {
-        Intent warningsIntent = new Intent(StartActivity.this, WarningsActivity.class);
         reloadContinueData();
+        int itemCode = ((StartPresenter) presenter).getItemCode();
+        if (itemCode != HEMNES_DAYBED_CODE) {
+            showAlertDialogForType(AlertDialogActivity.ALERT_TYPE_TEST_ITEM);
+            return;
+        }
+        Intent warningsIntent = new Intent(StartActivity.this, WarningsActivity.class);
         warningsIntent.putExtra(ITEM_INDEX, ((StartPresenter) presenter).getItemIndex());
-        warningsIntent.putExtra(ITEM_CODE, ((StartPresenter) presenter).getItemCode());
+        warningsIntent.putExtra(ITEM_CODE, itemCode);
         startActivityForResult(warningsIntent, WARNINGS_ACTIVITY);
 
     }
@@ -253,10 +259,15 @@ public class StartActivity extends BaseActivity implements IStartView {
     }
 
     private void navigateToItemPhasesActivity() {
-        Intent intent = new Intent(StartActivity.this, ItemPhasesActivity.class);
         reloadContinueData();
+        int itemCode = ((StartPresenter) presenter).getItemCode();
+        if (itemCode != HEMNES_DAYBED_CODE) {
+            showAlertDialogForType(AlertDialogActivity.ALERT_TYPE_TEST_ITEM);
+            return;
+        }
+        Intent intent = new Intent(StartActivity.this, ItemPhasesActivity.class);
         intent.putExtra(ITEM_INDEX, ((StartPresenter) presenter).getItemIndex());
-        intent.putExtra(ITEM_CODE, ((StartPresenter) presenter).getItemCode());
+        intent.putExtra(ITEM_CODE, itemCode);
         startActivityForResult(intent, ITEM_PHASES);
     }
 

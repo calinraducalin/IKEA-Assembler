@@ -92,7 +92,7 @@ public class StartPresenter extends BasePresenter {
                 break;
 
             default:
-                if (continueValue % BaseActivity.WARNINGS_ID == 0) {
+                if (continueValue % BaseActivity.PHASE_MULTIPLIER == 0) {
                     this.view.navigateToPhaseOverviewActivity();
                 } else {
                     int phase = (continueValue / BaseActivity.WARNINGS_ID) - 1;
